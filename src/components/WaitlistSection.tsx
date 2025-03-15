@@ -10,24 +10,7 @@ import {
 import { useTexts } from '../hooks/useTexts';
 import { useWaitlistSubmission } from '../hooks/useWaitlistSubmission';
 import { useState, useEffect } from 'react';
-
-interface ClarityCustomData {
-  name: string;
-  email: string;
-  whatsapp: string;
-  clinicCount: string;
-  state: string;
-  source: string;
-}
-
-declare global {
-  interface Window {
-    clarity?: {
-      identify: (userId: string, customData?: ClarityCustomData) => void;
-      set: (key: string, value: string) => void;
-    };
-  }
-}
+import Clarity from '@microsoft/clarity';
 
 interface WaitlistForm {
   name: string;
@@ -95,21 +78,17 @@ export const WaitlistSection = () => {
     try {
       setSubmitStatus('idle');
 
-      // Set Clarity user data before form submission
-      if (window.clarity) {
-        window.clarity.identify(data.email, {
-          name: data.name,
-          email: data.email,
-          whatsapp: data.whatsapp,
-          clinicCount: data.clinicCount,
-          state: data.state,
-          source: sourceParam || 'direct'
-        });
-
-        // Set individual properties for better filtering
-        window.clarity.set('clinicCount', data.clinicCount);
-        window.clarity.set('state', data.state);
-        window.clarity.set('source', sourceParam || 'direct');
+      try {
+        // Using the @microsoft/clarity package
+        Clarity.identify(data.email);
+        
+        // Set individual properties using setTag
+        Clarity.setTag('clinicCount', data.clinicCount);
+        Clarity.setTag('state', data.state);
+        Clarity.setTag('source', sourceParam || 'direct');
+      } catch (clarityError) {
+        console.warn('Error setting Clarity data:', clarityError);
+        // Continue with form submission even if Clarity fails
       }
 
       await submitToWaitlist({
