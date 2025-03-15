@@ -11,11 +11,15 @@ module.exports = {
         '84': '21rem',
         '96': '24rem',
       },
+      fontFamily: {
+        sans: ['Poppins', 'system-ui', 'sans-serif'],
+        secondary: ['Roboto', 'Arial', 'sans-serif']
+      },
     },
   },
   plugins: [require('daisyui')],
   daisyui: {
-    themes: ["cupcake", "dark"],
+    themes: ["corporate", "dark"],
     darkTheme: "dark",
   },
 }
