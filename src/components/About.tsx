@@ -6,7 +6,7 @@ export const About = () => {
   const texts = useTexts();
   
   return (
-    <section className="h-screen bg-base-200 relative overflow-hidden flex items-center">
+    <section id="about" className="h-screen bg-base-200 relative overflow-hidden flex items-center">
       {/* Animated background elements */}
       <motion.div
         animate={{

@@ -1,12 +1,12 @@
 {
   "global": {
-    "appName": "ProteSys"
+    "appName": "Protesys"
   },
   "navbar": {
     "menuItems": ["Home", "Features", "Pricing", "Contact"]
   },
   "hero": {
-    "title": "Do controle de próteses ao CRM completo",
+    "title": "Gestão de Próteses da sua clínica <br/> nunca foi tão fácil",
     "typewriterTexts": [
       "Tudo o que sua Clínica Precisa em um Só Lugar",
       "Tecnologia que Revoluciona a Gestão Odontológica",

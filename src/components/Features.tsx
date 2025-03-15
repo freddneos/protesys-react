@@ -39,7 +39,7 @@ export const Features = () => {
   const texts = useTexts();
   
   return (
-    <section className="min-h-screen py-20 px-4 bg-base-100 flex items-center">
+    <section id="features" className="min-h-screen py-20 px-4 bg-base-100 flex items-center">
       <div className="container mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}

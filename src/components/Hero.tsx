@@ -3,12 +3,18 @@ import { ArrowRight } from "iconsax-react";
 import Typewriter from "typewriter-effect";
 import { UilClinicMedical, UilCog } from '@iconscout/react-unicons';
 import { useTexts } from '../hooks/useTexts';
+import React from "react";
+
+// Função auxiliar para renderizar HTML de forma segura
+const RenderHTML: React.FC<{ html: string; className?: string }> = ({ html, className }) => {
+  return <div className={className} dangerouslySetInnerHTML={{ __html: html }} />;
+};
 
 export const Hero = () => {
   const texts = useTexts();
   
   return (
-    <section className="hero min-h-screen bg-base-100 relative overflow-hidden">
+    <section id="hero" className="hero min-h-screen bg-base-100 relative overflow-hidden">
       {/* Animated background elements */}
       <motion.div
         animate={{
@@ -60,13 +66,20 @@ export const Hero = () => {
             transition={{ duration: 0.8 }}
           >
             <h1 className="flex flex-col gap-4 text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-12 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-              <span>{texts.hero.title}</span>
+              {typeof texts.hero.title === 'string' && texts.hero.title.includes('<') ? (
+                <RenderHTML html={texts.hero.title} />
+              ) : (
+                <span>{texts.hero.title}</span>
+              )}
             </h1>
 
             <div className="text-lg md:text-xl lg:text-2xl text-base-content/70 mb-12 h-32 flex items-center justify-center">
               <Typewriter
                 options={{
-                  strings: texts.hero.typewriterTexts,
+                  strings: texts.hero.typewriterTexts.map(text => {
+                    // Remove tags HTML caso existam para evitar problemas com o Typewriter
+                    return typeof text === 'string' ? text.replace(/<[^>]*>/g, '') : text;
+                  }),
                   autoStart: true,
                   loop: true,
                   delay: 50,
@@ -86,7 +99,11 @@ export const Hero = () => {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
-                {texts.hero.buttons.waitlist}
+                {typeof texts.hero.buttons.waitlist === 'string' && texts.hero.buttons.waitlist.includes('<') ? (
+                  <RenderHTML html={texts.hero.buttons.waitlist} />
+                ) : (
+                  texts.hero.buttons.waitlist
+                )}
               </motion.button>
               
               <motion.button 
@@ -94,7 +111,13 @@ export const Hero = () => {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
-                {texts.hero.buttons.demo} <ArrowRight size={24} />
+                {typeof texts.hero.buttons.demo === 'string' && texts.hero.buttons.demo.includes('<') ? (
+                  <RenderHTML html={texts.hero.buttons.demo} />
+                ) : (
+                  <>
+                    {texts.hero.buttons.demo} <ArrowRight size={24} />
+                  </>
+                )}
               </motion.button>
             </motion.div>
           </motion.div>

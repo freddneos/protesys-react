@@ -16,10 +16,6 @@ interface WaitlistForm {
   state: string;
 }
 
-const brazilianStates = [
-  "AC", "AL", "AP", "AM", "BA", "CE", "DF", "ES", "GO", "MA", "MT", "MS", "MG",
-  "PA", "PB", "PR", "PE", "PI", "RJ", "RN", "RS", "RO", "RR", "SC", "SP", "SE", "TO"
-];
 
 export const WaitlistSection = () => {
   const texts = useTexts();
@@ -32,7 +28,7 @@ export const WaitlistSection = () => {
   };
 
   return (
-    <section className="min-h-screen bg-base-100 relative overflow-hidden">
+    <section id="waitlist" className="min-h-screen bg-base-100 relative overflow-hidden">
       {/* Decorative elements */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-1/4 -right-48 w-96 h-96 bg-primary/5 rounded-full blur-3xl" />

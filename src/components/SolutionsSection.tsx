@@ -76,7 +76,7 @@ export const SolutionsSection = () => {
   const [expandedIndex, setExpandedIndex] = useState<number | null>(0);
 
   return (
-    <section className="min-h-screen bg-base-100 relative">
+    <section id="solutions" className="min-h-screen bg-base-100 relative">
       <div className="container mx-auto px-4 py-20 min-h-screen flex flex-col justify-center">
         <motion.div
           initial={{ opacity: 0 }}

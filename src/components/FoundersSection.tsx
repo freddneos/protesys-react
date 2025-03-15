@@ -2,10 +2,6 @@ import { motion } from "framer-motion";
 import { Code1, Hospital } from "iconsax-react";
 import { useTexts } from '../hooks/useTexts';
 
-const founderIcons = {
-  "Code1": Code1,
-  "Hospital": Hospital
-};
 
 interface FounderCardProps {
   name: string;
@@ -56,7 +52,7 @@ export const FoundersSection = () => {
   const texts = useTexts();
   
   return (
-    <section className="min-h-screen bg-base-100 relative">
+    <section id="founders" className="min-h-screen bg-base-100 relative">
       <div className="container mx-auto px-4 py-20 min-h-screen flex flex-col justify-center">
         <motion.div
           initial={{ opacity: 0 }}
