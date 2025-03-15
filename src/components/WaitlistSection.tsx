@@ -11,6 +11,24 @@ import { useTexts } from '../hooks/useTexts';
 import { useWaitlistSubmission } from '../hooks/useWaitlistSubmission';
 import { useState, useEffect } from 'react';
 
+interface ClarityCustomData {
+  name: string;
+  email: string;
+  whatsapp: string;
+  clinicCount: string;
+  state: string;
+  source: string;
+}
+
+declare global {
+  interface Window {
+    clarity?: {
+      identify: (userId: string, customData?: ClarityCustomData) => void;
+      set: (key: string, value: string) => void;
+    };
+  }
+}
+
 interface WaitlistForm {
   name: string;
   email: string;
@@ -76,6 +94,24 @@ export const WaitlistSection = () => {
   const onSubmit = async (data: WaitlistForm) => {
     try {
       setSubmitStatus('idle');
+
+      // Set Clarity user data before form submission
+      if (window.clarity) {
+        window.clarity.identify(data.email, {
+          name: data.name,
+          email: data.email,
+          whatsapp: data.whatsapp,
+          clinicCount: data.clinicCount,
+          state: data.state,
+          source: sourceParam || 'direct'
+        });
+
+        // Set individual properties for better filtering
+        window.clarity.set('clinicCount', data.clinicCount);
+        window.clarity.set('state', data.state);
+        window.clarity.set('source', sourceParam || 'direct');
+      }
+
       await submitToWaitlist({
         ...data,
         source: sourceParam || undefined
