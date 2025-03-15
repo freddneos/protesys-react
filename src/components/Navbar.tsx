@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { UilBars, UilTimes } from '@iconscout/react-unicons';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const Navbar: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const location = useLocation();
+  const navigate = useNavigate();
   
-  // Define as seções disponíveis no site
   const navigationSections = [
     { name: "Home", id: "hero" },
     { name: "Sobre", id: "about" },
@@ -24,14 +26,32 @@ const Navbar: React.FC = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const scrollToSection = (id: string) => {
+  const handleNavigation = (id: string) => {
     setIsMobileMenuOpen(false);
-    const element = document.getElementById(id);
-    if (element) {
-      const yOffset = -80; // Ajuste para compensar a altura do navbar fixo
-      const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
-      window.scrollTo({ top: y, behavior: 'smooth' });
+    if (location.pathname !== '/') {
+      navigate('/');
+      // Wait for navigation to complete before scrolling
+      setTimeout(() => {
+        const element = document.getElementById(id);
+        if (element) {
+          const yOffset = -80;
+          const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
+          window.scrollTo({ top: y, behavior: 'smooth' });
+        }
+      }, 100);
+    } else {
+      const element = document.getElementById(id);
+      if (element) {
+        const yOffset = -80;
+        const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
+        window.scrollTo({ top: y, behavior: 'smooth' });
+      }
     }
+  };
+
+  const goToLogin = () => {
+    setIsMobileMenuOpen(false);
+    navigate('/login');
   };
 
   return (
@@ -50,7 +70,7 @@ const Navbar: React.FC = () => {
               className="btn btn-ghost normal-case text-2xl font-bold"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              onClick={() => scrollToSection('hero')}
+              onClick={() => navigate('/')}
             >
               <h1 className="text-neutral">
                 Prote
@@ -71,24 +91,37 @@ const Navbar: React.FC = () => {
               </h1>
             </motion.a>
           </div>
+          
           {/* Desktop Menu */}
           <div className="flex-none hidden md:block">
             <ul className="menu menu-horizontal p-0 gap-2">
-              {navigationSections.map((item) => (
+              {location.pathname === '/' && navigationSections.map((item) => (
                 <motion.li key={item.name}
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >
                   <a 
                     className="px-4 rounded-lg hover:bg-primary hover:text-primary-content transition-all duration-200 cursor-pointer"
-                    onClick={() => scrollToSection(item.id)}
+                    onClick={() => handleNavigation(item.id)}
                   >
                     {item.name}
                   </a>
                 </motion.li>
               ))}
+              <motion.li
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <a 
+                  className="px-4 rounded-lg bg-primary text-primary-content hover:bg-primary-focus transition-all duration-200 cursor-pointer"
+                  onClick={goToLogin}
+                >
+                  Login
+                </a>
+              </motion.li>
             </ul>
           </div>
+
           {/* Mobile Menu Button */}
           <div className="flex-none md:hidden">
             <button
@@ -104,6 +137,7 @@ const Navbar: React.FC = () => {
           </div>
         </div>
       </motion.nav>
+
       {/* Mobile Menu Overlay */}
       <AnimatePresence>
         {isMobileMenuOpen && (
@@ -123,19 +157,30 @@ const Navbar: React.FC = () => {
               className="fixed right-0 top-0 bottom-0 w-64 bg-base-100 shadow-xl p-6 pt-20"
             >
               <ul className="menu gap-2">
-                {navigationSections.map((item) => (
+                {location.pathname === '/' && navigationSections.map((item) => (
                   <motion.li key={item.name}
                     whileHover={{ scale: 1.05, x: 10 }}
                     whileTap={{ scale: 0.95 }}
                   >
                     <a 
                       className="hover:bg-primary hover:text-primary-content transition-all duration-200 cursor-pointer"
-                      onClick={() => scrollToSection(item.id)}
+                      onClick={() => handleNavigation(item.id)}
                     >
                       {item.name}
                     </a>
                   </motion.li>
                 ))}
+                <motion.li
+                  whileHover={{ scale: 1.05, x: 10 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  <a 
+                    className="bg-primary text-primary-content hover:bg-primary-focus transition-all duration-200 cursor-pointer"
+                    onClick={goToLogin}
+                  >
+                    Login
+                  </a>
+                </motion.li>
               </ul>
             </motion.div>
           </motion.div>
