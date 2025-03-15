@@ -56,10 +56,10 @@ export const About = () => {
           transition={{ duration: 0.8 }}
           className="text-center mb-16"
         >
-          <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent leading-[1.3] py-1">
+          <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent leading-[1.4] py-2">
             Tecnologia que Revoluciona a Gestão Odontológica
           </h2>
-          <p className="text-lg md:text-xl text-base-content/70 max-w-3xl mx-auto leading-relaxed py-1">
+          <p className="text-lg md:text-xl text-base-content/70 max-w-3xl mx-auto leading-relaxed py-2">
             O Protesys é um sistema completo de gestão para clínicas odontológicas, com foco em otimizar 
             o controle de próteses e aprimorar a gestão de relacionamento com clientes (CRM). Automatize 
             processos, garanta prazos e tenha uma visão detalhada de cada etapa, tudo em uma plataforma 

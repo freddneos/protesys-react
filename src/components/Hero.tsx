@@ -57,14 +57,15 @@ export const Hero = () => {
             transition={{ duration: 0.8 }}
           >
             <h1 className="flex flex-col gap-4 text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-12 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-              <span>Gestão Completa</span>
-              <span className="leading-[1.3]">Para Clínicas Odontológicas</span>
+              <span>Tecnologia que Revoluciona</span>
+              <span className="leading-[1.3]">a Gestão Odontológica</span>
             </h1>
 
-            <div className="text-lg md:text-xl lg:text-2xl text-base-content/70 mb-12 h-24 flex items-center justify-center">
+            <div className="text-lg md:text-xl lg:text-2xl text-base-content/70 mb-12 h-32 flex items-center justify-center">
               <Typewriter
                 options={{
                   strings: [
+                    "Tudo o que sua Clínica Precisa em um Só Lugar",
                     "Do controle de próteses ao CRM completo",
                     "Tudo em uma única plataforma",
                     "Simplifique a gestão da sua clínica"
