@@ -5,6 +5,7 @@ import { Features } from './components/Features';
 import { SolutionsSection } from './components/SolutionsSection';
 import { FoundersSection } from './components/FoundersSection';
 import { WaitlistSection } from './components/WaitlistSection';
+import { Footer } from './components/Footer';
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
       <SolutionsSection />
       <FoundersSection />
       <WaitlistSection />
+      <Footer />
     </div>
   );
 }
