@@ -29,7 +29,7 @@ export const DashboardLayout = () => {
           </div>
           <button
             onClick={handleLogout}
-            className="btn btn-ghost btn-sm text-error hover:bg-error/10 transition-colors"
+            className="btn btn-ghost btn-sm rounded-full text-error hover:bg-error/10 transition-colors"
           >
             <RiLogoutBoxLine className="w-5 h-5" />
             {texts.dashboard.user.logout}

@@ -87,7 +87,7 @@ export const DashboardClients = () => {
           {texts.dashboard.clients.title}
         </h1>
         <button 
-          className="btn btn-primary gap-2"
+          className="btn btn-primary gap-2 rounded-full"
           onClick={() => setIsModalOpen(true)}
         >
           <UserAdd size={20} />
@@ -139,13 +139,13 @@ export const DashboardClients = () => {
                   <td>
                     <div className="flex gap-2">
                       <button
-                        className="btn btn-ghost btn-sm"
+                        className="btn btn-ghost btn-sm rounded-full"
                         onClick={() => handleEdit(client)}
                       >
                         <Edit2 size={18} className="text-primary" />
                       </button>
                       <button
-                        className="btn btn-ghost btn-sm"
+                        className="btn btn-ghost btn-sm rounded-full"
                         onClick={() => handleDeleteClient(client)}
                       >
                         <Trash size={18} className="text-error" />

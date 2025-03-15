@@ -151,10 +151,10 @@ export const ClientModal = ({ isOpen, onClose, onSubmit, client }: ClientModalPr
           </div>
 
           <div className="modal-action">
-            <button type="button" className="btn" onClick={onClose}>
+            <button type="button" className="btn rounded-full" onClick={onClose}>
               {texts.dashboard.clients.modal.buttons.cancel}
             </button>
-            <button type="submit" className="btn btn-primary">
+            <button type="submit" className="btn btn-primary rounded-full">
               {texts.dashboard.clients.modal.buttons.save}
             </button>
           </div>
