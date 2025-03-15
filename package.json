@@ -12,6 +12,7 @@
   "dependencies": {
     "@iconscout/react-unicons": "^2.2.4",
     "@microsoft/clarity": "^1.0.0",
+    "@supabase/supabase-js": "^2.49.1",
     "@types/uuid": "^10.0.0",
     "framer-motion": "^10.18.0",
     "iconsax-react": "^0.0.8",
