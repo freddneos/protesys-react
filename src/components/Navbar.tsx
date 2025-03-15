@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { UilBars, UilTimes } from '@iconscout/react-unicons';
+import { useTexts } from '../hooks/useTexts';
 
 const Navbar: React.FC = () => {
+  const texts = useTexts();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -54,7 +56,7 @@ const Navbar: React.FC = () => {
           {/* Desktop Menu */}
           <div className="flex-none hidden md:block">
             <ul className="menu menu-horizontal p-0 gap-2">
-              {['Home', 'Features', 'Pricing', 'Contact'].map((item) => (
+              {texts.navbar.menuItems.map((item) => (
                 <motion.li key={item}
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
@@ -102,7 +104,7 @@ const Navbar: React.FC = () => {
               className="fixed right-0 top-0 bottom-0 w-64 bg-base-100 shadow-xl p-6 pt-20"
             >
               <ul className="menu gap-2">
-                {['Home', 'Features', 'Pricing', 'Contact'].map((item) => (
+                {texts.navbar.menuItems.map((item) => (
                   <motion.li key={item}
                     whileHover={{ scale: 1.05, x: 10 }}
                     whileTap={{ scale: 0.95 }}

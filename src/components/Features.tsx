@@ -7,50 +7,16 @@ import {
   MessageProgramming,
   Money
 } from "iconsax-react";
+import { useTexts } from '../hooks/useTexts';
 
-interface Feature {
+interface FeatureCardProps {
   icon: React.ElementType;
   title: string;
   description: string;
-}
-
-interface FeatureCardProps extends Feature {
   index: number;
 }
 
-const features: Feature[] = [
-  {
-    icon: Crown,
-    title: "Gestão de Próteses",
-    description:
-      "Controle total das etapas  de Molde, Prova com cera, Prova com dente, Acrilização e entrega. todos os possives atrasos e errors em um só lugar."
-  },
-  {
-    icon: Calendar,
-    title: "Automação de Agendamentos",
-    description: "Organize prazos e horários com inteligência , sem conflitos e sem atrasos."
-  },
-  {
-    icon: ChartSquare,
-    title: "Relatórios Detalhados",
-    description: "Tenha dados precisos e exportáveis para melhor tomada de decisão."
-  },
-  {
-    icon: Notification,
-    title: "Notificações Inteligentes",
-    description: "Receba alertas automáticos sobre prazos e mudanças de status."
-  },
-  {
-    icon: MessageProgramming,
-    title: "Integrações Poderosas",
-    description: "Conecte-se com WhatsApp, Google Sheets e potencialize seus processos com Inteligência Artificial."
-  },
-  {
-    icon: Money,
-    title: "Gestão Smart",
-    description: "Tenha controle de ponta a ponta do processo de prótese e não perca nenhum prazo."
-  }
-];
+const featureIcons = [Crown, Calendar, ChartSquare, Notification, MessageProgramming, Money];
 
 const FeatureCard = ({ icon: Icon, title, description, index }: FeatureCardProps) => {
   return (
@@ -70,6 +36,8 @@ const FeatureCard = ({ icon: Icon, title, description, index }: FeatureCardProps
 };
 
 export const Features = () => {
+  const texts = useTexts();
+  
   return (
     <section className="min-h-screen py-20 px-4 bg-base-100 flex items-center">
       <div className="container mx-auto">
@@ -80,13 +48,19 @@ export const Features = () => {
           className="text-center mb-16"
         >
           <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent leading-[1.3] py-2">
-            Tudo o que sua Clínica Precisa em um Só Lugar
+            {texts.features.title}
           </h2>
         </motion.div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {features.map((feature, index) => (
-            <FeatureCard key={index} {...feature} index={index} />
+          {texts.features.items.map((feature, index) => (
+            <FeatureCard 
+              key={index} 
+              icon={featureIcons[index % featureIcons.length]} 
+              title={feature.title} 
+              description={feature.description} 
+              index={index} 
+            />
           ))}
         </div>
       </div>

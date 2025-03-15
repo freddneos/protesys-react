@@ -1,25 +1,10 @@
 import { motion } from "framer-motion";
 import { UilClinicMedical, UilCog } from '@iconscout/react-unicons';
-
-const features = [
-  {
-    icon: <UilClinicMedical className="w-12 h-12" />,
-    title: "Gestão Eficiente de Próteses",
-    description: "Controle completo do fluxo de trabalho protético, desde o pedido até a entrega."
-  },
-  {
-    icon: <UilCog className="w-12 h-12" />,
-    title: "Processos Automatizados",
-    description: "Automatização inteligente de tarefas rotineiras para otimizar o tempo da sua equipe."
-  },
-  {
-    icon: <UilClinicMedical className="w-12 h-12" />,
-    title: "CRM Integrado e Inteligente",
-    description: "Gestão de relacionamento com clientes integrada ao fluxo de trabalho da clínica."
-  }
-];
+import { useTexts } from '../hooks/useTexts';
 
 export const About = () => {
+  const texts = useTexts();
+  
   return (
     <section className="h-screen bg-base-200 relative overflow-hidden flex items-center">
       {/* Animated background elements */}
@@ -57,18 +42,15 @@ export const About = () => {
           className="text-center mb-16"
         >
           <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent leading-[1.4] py-2">
-            Tecnologia que Revoluciona a Gestão Odontológica
+            {texts.about.title}
           </h2>
           <p className="text-lg md:text-xl text-base-content/70 max-w-3xl mx-auto leading-relaxed py-2">
-            O Protesys é um sistema completo de gestão para clínicas odontológicas, com foco em otimizar 
-            o controle de próteses e aprimorar a gestão de relacionamento com clientes (CRM). Automatize 
-            processos, garanta prazos e tenha uma visão detalhada de cada etapa, tudo em uma plataforma 
-            moderna e intuitiva.
+            {texts.about.description}
           </p>
         </motion.div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {features.map((feature, index) => (
+          {texts.about.features.map((feature, index) => (
             <motion.div
               key={feature.title}
               initial={{ opacity: 0, y: 20 }}
@@ -79,7 +61,11 @@ export const About = () => {
             >
               <div className="card-body items-center text-center">
                 <div className="text-primary mb-4">
-                  {feature.icon}
+                  {index % 2 === 0 ? (
+                    <UilClinicMedical className="w-12 h-12" />
+                  ) : (
+                    <UilCog className="w-12 h-12" />
+                  )}
                 </div>
                 <h3 className="card-title text-xl mb-3">{feature.title}</h3>
                 <p className="text-base-content/70">{feature.description}</p>

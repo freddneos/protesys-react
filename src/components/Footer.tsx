@@ -6,10 +6,12 @@ import {
   Location
 } from "iconsax-react";
 import { motion } from "framer-motion";
-
-const currentYear = new Date().getFullYear();
+import { useTexts } from '../hooks/useTexts';
 
 export const Footer = () => {
+  const texts = useTexts();
+  const currentYear = new Date().getFullYear();
+
   return (
     <footer className="footer footer-center p-10 bg-base-200 text-base-content rounded">
       <motion.div 
@@ -18,10 +20,9 @@ export const Footer = () => {
         viewport={{ once: true }}
         className="grid grid-flow-col gap-4"
       >
-        <a className="link link-hover">Sobre nós</a>
-        <a className="link link-hover">Lista de Espera</a>
-        <a className="link link-hover">Política de Privacidade</a>
-        <a className="link link-hover">Termos de Uso</a>
+        {texts.footer.links.map((link, index) => (
+          <a key={index} className="link link-hover">{link}</a>
+        ))}
       </motion.div>
 
       <motion.div
@@ -67,11 +68,11 @@ export const Footer = () => {
       >
         <div className="flex items-center justify-center gap-2 text-sm">
           <MessageText1 size={16} className="text-primary" />
-          <span>contato@protesys.com.br</span>
+          <span>{texts.footer.contact.email}</span>
         </div>
         <div className="flex items-center justify-center gap-2 text-sm">
           <Location size={16} className="text-primary" />
-          <span>São Paulo, SP - Brasil</span>
+          <span>{texts.footer.contact.location}</span>
         </div>
       </motion.div>
 
@@ -82,7 +83,7 @@ export const Footer = () => {
         transition={{ delay: 0.3 }}
       >
         <p className="text-base-content/70">
-          Copyright © {currentYear} - Todos os direitos reservados à Protesys
+          {texts.footer.copyright.replace('{year}', currentYear.toString())}
         </p>
       </motion.div>
     </footer>

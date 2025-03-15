@@ -2,8 +2,11 @@ import { motion } from "framer-motion";
 import { ArrowRight } from "iconsax-react";
 import Typewriter from "typewriter-effect";
 import { UilClinicMedical, UilCog } from '@iconscout/react-unicons';
+import { useTexts } from '../hooks/useTexts';
 
 export const Hero = () => {
+  const texts = useTexts();
+  
   return (
     <section className="hero min-h-screen bg-base-100 relative overflow-hidden">
       {/* Animated background elements */}
@@ -57,19 +60,13 @@ export const Hero = () => {
             transition={{ duration: 0.8 }}
           >
             <h1 className="flex flex-col gap-4 text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-12 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-              <span>Tecnologia que Revoluciona</span>
-              <span className="leading-[1.3]">a Gestão Odontológica</span>
+              <span>{texts.hero.title}</span>
             </h1>
 
             <div className="text-lg md:text-xl lg:text-2xl text-base-content/70 mb-12 h-32 flex items-center justify-center">
               <Typewriter
                 options={{
-                  strings: [
-                    "Tudo o que sua Clínica Precisa em um Só Lugar",
-                    "Do controle de próteses ao CRM completo",
-                    "Tudo em uma única plataforma",
-                    "Simplifique a gestão da sua clínica"
-                  ],
+                  strings: texts.hero.typewriterTexts,
                   autoStart: true,
                   loop: true,
                   delay: 50,
@@ -89,7 +86,7 @@ export const Hero = () => {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
-                Entre na Lista de Espera
+                {texts.hero.buttons.waitlist}
               </motion.button>
               
               <motion.button 
@@ -97,7 +94,7 @@ export const Hero = () => {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
-                Agende uma Demonstração <ArrowRight size={24} />
+                {texts.hero.buttons.demo} <ArrowRight size={24} />
               </motion.button>
             </motion.div>
           </motion.div>

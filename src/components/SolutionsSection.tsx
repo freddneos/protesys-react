@@ -9,54 +9,29 @@ import {
   ArrowDown2,
   ArrowUp2
 } from "iconsax-react";
+import { useTexts } from '../hooks/useTexts';
 
-interface Solution {
+interface SolutionCardProps {
   icon: React.ElementType;
   title: string;
   description: string;
   details: string;
-}
-
-const solutions: Solution[] = [
-  {
-    icon: Electricity,
-    title: "Automação Inteligente para Processos Complexos",
-    description: "Simplifique processos complexos com automação inteligente",
-    details: "Nossa plataforma automatiza todo o fluxo de trabalho da sua clínica, desde o agendamento inicial até a entrega final. Reduza erros, economize tempo e mantenha um padrão de qualidade consistente em todos os processos."
-  },
-  {
-    icon: ElementEqual,
-    title: "Integração Completa com Ferramentas Essenciais",
-    description: "Conecte todas as suas ferramentas em um só lugar",
-    details: "Integração perfeita com WhatsApp, Google Calendar, sistemas de pagamento e muito mais. Centralize suas operações e elimine a necessidade de alternar entre múltiplas plataformas."
-  },
-  {
-    icon: SearchZoomIn1,
-    title: "Indicadores Visuais e Relatórios Precisos",
-    description: "Tome decisões baseadas em dados reais e atualizados",
-    details: "Dashboards intuitivos e relatórios detalhados fornecem insights valiosos sobre seu negócio. Acompanhe KPIs importantes, identifique tendências e otimize seus processos com base em dados concretos."
-  },
-  {
-    icon: Chart21,
-    title: "Gestão de Próteses e CRM em um Só Lugar",
-    description: "Gerencie relacionamentos e projetos em uma única plataforma",
-    details: "Combine o poder de um CRM robusto com ferramentas especializadas para gestão de próteses. Mantenha um histórico completo de cada cliente, acompanhe o status de cada projeto e garanta a satisfação total."
-  },
-  {
-    icon: BoxAdd,
-    title: "Plataforma Pronta para Escalar com sua Clínica",
-    description: "Cresça sem preocupações com uma solução escalável",
-    details: "Nossa plataforma evolui com seu negócio. Adicione novos profissionais, expanda suas operações e mantenha o controle total, sem comprometer a eficiência ou a qualidade do atendimento."
-  }
-];
-
-interface SolutionCardProps extends Solution {
   isExpanded: boolean;
   onToggle: () => void;
   index: number;
 }
 
-const SolutionCard = ({ icon: Icon, title, description, details, isExpanded, onToggle, index }: SolutionCardProps) => (
+const solutionIcons = [Electricity, ElementEqual, SearchZoomIn1, Chart21, BoxAdd];
+
+const SolutionCard = ({ 
+  icon: Icon, 
+  title, 
+  description, 
+  details, 
+  isExpanded, 
+  onToggle, 
+  index 
+}: SolutionCardProps) => (
   <motion.div
     initial={{ opacity: 0, y: 20 }}
     animate={{ opacity: 1, y: 0 }}
@@ -97,6 +72,7 @@ const SolutionCard = ({ icon: Icon, title, description, details, isExpanded, onT
 );
 
 export const SolutionsSection = () => {
+  const texts = useTexts();
   const [expandedIndex, setExpandedIndex] = useState<number | null>(0);
 
   return (
@@ -111,19 +87,22 @@ export const SolutionsSection = () => {
         >
           <h2 className="text-4xl md:text-6xl font-bold mb-6">
             <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-              Por que Escolher o Protesys?
+              {texts.solutions.title}
             </span>
           </h2>
           <p className="text-xl text-base-content/70">
-            Descubra como podemos transformar a gestão da sua clínica
+            {texts.solutions.subtitle}
           </p>
         </motion.div>
 
         <div className="grid gap-4 max-w-4xl mx-auto w-full">
-          {solutions.map((solution, index) => (
+          {texts.solutions.items.map((solution, index) => (
             <SolutionCard
               key={index}
-              {...solution}
+              icon={solutionIcons[index % solutionIcons.length]}
+              title={solution.title}
+              description={solution.description}
+              details={solution.details}
               index={index}
               isExpanded={expandedIndex === index}
               onToggle={() => setExpandedIndex(expandedIndex === index ? null : index)}

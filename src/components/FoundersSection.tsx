@@ -1,37 +1,27 @@
 import { motion } from "framer-motion";
 import { Code1, Hospital } from "iconsax-react";
+import { useTexts } from '../hooks/useTexts';
 
-interface Founder {
+const founderIcons = {
+  "Code1": Code1,
+  "Hospital": Hospital
+};
+
+interface FounderCardProps {
   name: string;
   role: string;
   bio: string;
   image: string;
   icon: React.ElementType;
+  index: number;
 }
 
-const founders: Founder[] = [
-  {
-    name: "Frederico Bezerra",
-    role: "Co-fundador, CEO/CTO",
-    bio: "Especialista em tecnologia e startups, com atuação em quatro continentes. Possui mais de 15 anos de experiência em engenharia de software e é responsável por liderar a inovação tecnológica do Protesys, garantindo uma plataforma robusta e escalável.",
-    image: "/founder_2.png",
-    icon: Code1
-  },
-  {
-    name: "Daniel Marques",
-    role: "Co-fundador, COO",
-    bio: "Especialista em gestão de clínicas odontológicas, com anos de experiência à frente de estratégias que geraram milhões em faturamento. Mestre em gestão estratégica, tática e operacional, é o responsável por traduzir as necessidades das clínicas em soluções práticas e eficientes.",
-    image: "/founder_1.png",
-    icon: Hospital
-  }
-];
-
-const FounderCard = ({ name, role, bio, image, icon: Icon }: Founder) => (
+const FounderCard = ({ name, role, bio, image, icon: Icon, index }: FounderCardProps) => (
   <motion.div
     initial={{ opacity: 0, y: 20 }}
     whileInView={{ opacity: 1, y: 0 }}
     viewport={{ once: true }}
-    transition={{ duration: 0.5 }}
+    transition={{ duration: 0.5, delay: index * 0.2 }}
     className="card bg-base-200 hover:bg-base-300 transition-all duration-300"
   >
     <div className="card-body p-8">
@@ -63,6 +53,8 @@ const FounderCard = ({ name, role, bio, image, icon: Icon }: Founder) => (
 );
 
 export const FoundersSection = () => {
+  const texts = useTexts();
+  
   return (
     <section className="min-h-screen bg-base-100 relative">
       <div className="container mx-auto px-4 py-20 min-h-screen flex flex-col justify-center">
@@ -75,18 +67,30 @@ export const FoundersSection = () => {
         >
           <h2 className="text-4xl md:text-6xl font-bold mb-6">
             <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-              Especialistas por Trás da Inovação
+              {texts.founders.title}
             </span>
           </h2>
           <p className="text-xl text-base-content/70">
-            Conheça a equipe que está revolucionando a gestão de clínicas odontológicas
+            {texts.founders.subtitle}
           </p>
         </motion.div>
 
         <div className="grid md:grid-cols-2 gap-8 max-w-6xl mx-auto">
-          {founders.map((founder, index) => (
-            <FounderCard key={index} {...founder} />
-          ))}
+          {texts.founders.items.map((founder, index) => {
+            const IconComponent = index % 2 === 0 ? Code1 : Hospital;
+            
+            return (
+              <FounderCard 
+                key={index}
+                name={founder.name}
+                role={founder.role}
+                bio={founder.bio}
+                image={founder.image}
+                icon={IconComponent}
+                index={index}
+              />
+            );
+          })}
         </div>
       </div>
     </section>

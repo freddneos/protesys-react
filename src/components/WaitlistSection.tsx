@@ -6,6 +6,7 @@ import {
   Buildings2, 
   LocationTick 
 } from "iconsax-react";
+import { useTexts } from '../hooks/useTexts';
 
 interface WaitlistForm {
   name: string;
@@ -21,6 +22,7 @@ const brazilianStates = [
 ];
 
 export const WaitlistSection = () => {
+  const texts = useTexts();
   const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<WaitlistForm>();
 
   const onSubmit = async (data: WaitlistForm) => {
@@ -48,11 +50,11 @@ export const WaitlistSection = () => {
           >
             <h2 className="text-4xl md:text-5xl font-bold mb-6">
               <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-                Entre na Lista de Espera
+                {texts.waitlist.title}
               </span>
             </h2>
             <p className="text-xl text-base-content/70">
-              Seja um dos primeiros a experimentar a revolução na gestão de clínicas odontológicas
+              {texts.waitlist.subtitle}
             </p>
           </motion.div>
 
@@ -69,14 +71,14 @@ export const WaitlistSection = () => {
                   <label className="label">
                     <span className="label-text flex items-center gap-2">
                       <MessageText1 variant="Bold" size={20} className="text-primary" />
-                      Nome Completo
+                      {texts.waitlist.form.name.label}
                     </span>
                   </label>
                   <input
                     type="text"
-                    {...register("name", { required: "Nome é obrigatório" })}
+                    {...register("name", { required: texts.waitlist.form.name.required })}
                     className={`input input-bordered w-full ${errors.name ? 'input-error' : ''}`}
-                    placeholder="Seu nome completo"
+                    placeholder={texts.waitlist.form.name.placeholder}
                   />
                   {errors.name && (
                     <label className="label">
@@ -89,20 +91,20 @@ export const WaitlistSection = () => {
                   <label className="label">
                     <span className="label-text flex items-center gap-2">
                       <MessageText1 variant="Bold" size={20} className="text-primary" />
-                      Email
+                      {texts.waitlist.form.email.label}
                     </span>
                   </label>
                   <input
                     type="email"
                     {...register("email", { 
-                      required: "Email é obrigatório",
+                      required: texts.waitlist.form.email.required,
                       pattern: {
                         value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                        message: "Email inválido"
+                        message: texts.waitlist.form.email.invalid
                       }
                     })}
                     className={`input input-bordered w-full ${errors.email ? 'input-error' : ''}`}
-                    placeholder="seu@email.com"
+                    placeholder={texts.waitlist.form.email.placeholder}
                   />
                   {errors.email && (
                     <label className="label">
@@ -115,20 +117,20 @@ export const WaitlistSection = () => {
                   <label className="label">
                     <span className="label-text flex items-center gap-2">
                       <Mobile variant="Bold" size={20} className="text-primary" />
-                      WhatsApp
+                      {texts.waitlist.form.whatsapp.label}
                     </span>
                   </label>
                   <input
                     type="tel"
                     {...register("whatsapp", { 
-                      required: "WhatsApp é obrigatório",
+                      required: texts.waitlist.form.whatsapp.required,
                       pattern: {
                         value: /^\d{11}$/,
-                        message: "Digite apenas números (DDD + número)"
+                        message: texts.waitlist.form.whatsapp.invalid
                       }
                     })}
                     className={`input input-bordered w-full ${errors.whatsapp ? 'input-error' : ''}`}
-                    placeholder="11999999999"
+                    placeholder={texts.waitlist.form.whatsapp.placeholder}
                   />
                   {errors.whatsapp && (
                     <label className="label">
@@ -142,18 +144,19 @@ export const WaitlistSection = () => {
                     <label className="label">
                       <span className="label-text flex items-center gap-2">
                         <Buildings2 variant="Bold" size={20} className="text-primary" />
-                        Número de Clínicas
+                        {texts.waitlist.form.clinicCount.label}
                       </span>
                     </label>
                     <select 
-                      {...register("clinicCount", { required: "Selecione o número de clínicas" })}
+                      {...register("clinicCount", { required: texts.waitlist.form.clinicCount.required })}
                       className={`select select-bordered w-full ${errors.clinicCount ? 'select-error' : ''}`}
                     >
-                      <option value="">Selecione</option>
-                      <option value="1">1 clínica</option>
-                      <option value="2-5">2 a 5 clínicas</option>
-                      <option value="6-10">6 a 10 clínicas</option>
-                      <option value="10+">Mais de 10 clínicas</option>
+                      <option value="">{texts.waitlist.form.clinicCount.placeholder}</option>
+                      {texts.waitlist.form.clinicCount.options.map(option => (
+                        <option key={option.value} value={option.value}>
+                          {option.label}
+                        </option>
+                      ))}
                     </select>
                     {errors.clinicCount && (
                       <label className="label">
@@ -166,15 +169,15 @@ export const WaitlistSection = () => {
                     <label className="label">
                       <span className="label-text flex items-center gap-2">
                         <LocationTick variant="Bold" size={20} className="text-primary" />
-                        Estado
+                        {texts.waitlist.form.state.label}
                       </span>
                     </label>
                     <select 
-                      {...register("state", { required: "Selecione seu estado" })}
+                      {...register("state", { required: texts.waitlist.form.state.required })}
                       className={`select select-bordered w-full ${errors.state ? 'select-error' : ''}`}
                     >
-                      <option value="">Selecione</option>
-                      {brazilianStates.map(state => (
+                      <option value="">{texts.waitlist.form.state.placeholder}</option>
+                      {texts.waitlist.states.map(state => (
                         <option key={state} value={state}>{state}</option>
                       ))}
                     </select>
@@ -192,12 +195,12 @@ export const WaitlistSection = () => {
                     className={`btn btn-primary w-full ${isSubmitting ? 'loading' : ''}`}
                     disabled={isSubmitting}
                   >
-                    {isSubmitting ? 'Enviando...' : 'Entrar para Lista de Espera'}
+                    {isSubmitting ? texts.waitlist.form.submitting : texts.waitlist.form.submit}
                   </button>
                 </div>
 
                 <p className="text-sm text-base-content/60 text-center mt-4">
-                  Ao se inscrever, você será notificado sobre o lançamento da plataforma e terá acesso prioritário ao programa beta.
+                  {texts.waitlist.form.disclaimer}
                 </p>
               </form>
             </div>
