@@ -24,9 +24,9 @@ const FeatureCard = ({ feature, index }: { feature: { title: string; description
           className="w-16 h-16 mb-6 rounded-2xl bg-gradient-to-br from-primary/10 to-secondary/10 flex items-center justify-center"
         >
           {index % 2 === 0 ? (
-            <UilClinicMedical className="w-8 h-8 text-primary group-hover:text-secondary transition-colors duration-300" />
+            <UilClinicMedical size={32} className="w-8 h-8 text-primary group-hover:text-secondary transition-colors duration-300" />
           ) : (
-            <UilCog className="w-8 h-8 text-primary group-hover:text-secondary transition-colors duration-300" />
+            <UilCog size={32} className="w-8 h-8 text-primary group-hover:text-secondary transition-colors duration-300" />
           )}
         </motion.div>
         
