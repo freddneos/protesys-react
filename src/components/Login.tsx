@@ -1,11 +1,19 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 
 export const Login = () => {
-  const { signIn } = useAuth();
+  const { signIn, session, loading } = useAuth();
+  const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+
+  useEffect(() => {
+    if (session && !loading) {
+      navigate('/dashboard', { replace: true });
+    }
+  }, [session, loading, navigate]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -17,6 +25,18 @@ export const Login = () => {
       setError(err instanceof Error ? err.message : 'Erro ao fazer login');
     }
   };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-base-200">
+        <div className="loading loading-spinner loading-lg"></div>
+      </div>
+    );
+  }
+
+  if (session) {
+    return null;
+  }
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-base-200">
@@ -49,8 +69,12 @@ export const Login = () => {
                 required
               />
             </div>
-            <button className="btn btn-primary w-full" type="submit">
-              Entrar
+            <button 
+              className="btn btn-primary w-full" 
+              type="submit"
+              disabled={loading}
+            >
+              {loading ? <span className="loading loading-spinner"></span> : 'Entrar'}
             </button>
           </form>
         </div>
