@@ -240,7 +240,8 @@
         "navigation": {
             "metrics": "Métricas",
             "profile": "Perfil",
-            "settings": "Configurações"
+            "settings": "Configurações",
+            "clients": "Pacientes"
         },
         "user": {
             "logout": "Sair"
@@ -267,6 +268,66 @@
                 "title": "Segurança",
                 "changePassword": "Alterar Senha",
                 "twoFactor": "Autenticação de Dois Fatores"
+            }
+        },
+        "clients": {
+            "title": "Gerenciar Pacientes",
+            "search": {
+                "placeholder": "Buscar por nome ou CPF..."
+            },
+            "table": {
+                "name": "Nome",
+                "cpf": "CPF",
+                "phone": "Telefone",
+                "birth_date": "Data de Nascimento",
+                "actions": "Ações"
+            },
+            "modal": {
+                "create": "Novo Paciente",
+                "edit": "Editar Paciente",
+                "form": {
+                    "firstName": {
+                        "label": "Nome",
+                        "placeholder": "Digite o nome",
+                        "required": "Nome é obrigatório"
+                    },
+                    "lastName": {
+                        "label": "Sobrenome",
+                        "placeholder": "Digite o sobrenome",
+                        "required": "Sobrenome é obrigatório"
+                    },
+                    "cpf": {
+                        "label": "CPF",
+                        "placeholder": "Digite o CPF",
+                        "required": "CPF é obrigatório",
+                        "invalid": "CPF inválido"
+                    },
+                    "phone": {
+                        "label": "Telefone",
+                        "placeholder": "(00) 00000-0000",
+                        "required": "Telefone é obrigatório",
+                        "invalid": "Telefone inválido"
+                    },
+                    "birthDate": {
+                        "label": "Data de Nascimento"
+                    },
+                    "address": {
+                        "label": "Endereço",
+                        "placeholder": "Digite o endereço completo"
+                    }
+                },
+                "buttons": {
+                    "save": "Salvar",
+                    "cancel": "Cancelar"
+                }
+            },
+            "notifications": {
+                "createSuccess": "Paciente criado com sucesso!",
+                "createError": "Erro ao criar paciente",
+                "updateSuccess": "Paciente atualizado com sucesso!",
+                "updateError": "Erro ao atualizar paciente",
+                "deleteSuccess": "Paciente excluído com sucesso!",
+                "deleteError": "Erro ao excluir paciente"
             }
         }
     }

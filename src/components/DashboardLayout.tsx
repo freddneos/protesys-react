@@ -1,5 +1,5 @@
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
-import { RiUser3Line, RiSettings4Line, RiBarChartLine, RiLogoutBoxLine } from 'react-icons/ri';
+import { RiUser3Line, RiSettings4Line, RiBarChartLine, RiLogoutBoxLine, RiUserSearchLine } from 'react-icons/ri';
 import { useAuth } from '../hooks/useAuth';
 import { useTexts } from '../hooks/useTexts';
 
@@ -51,6 +51,19 @@ export const DashboardLayout = () => {
               >
                 <RiBarChartLine className="w-5 h-5" />
                 {texts.dashboard.navigation.metrics}
+              </Link>
+            </li>
+            <li>
+              <Link 
+                to="/dashboard/clients" 
+                className={`flex items-center gap-3 p-4 rounded-xl transition-all ${
+                  location.pathname === '/dashboard/clients' 
+                    ? 'bg-primary text-primary-content shadow-lg shadow-primary/20' 
+                    : 'hover:bg-base-200'
+                }`}
+              >
+                <RiUserSearchLine className="w-5 h-5" />
+                {texts.dashboard.navigation.clients}
               </Link>
             </li>
             <li>

@@ -13,7 +13,9 @@ import { WaitlistSection } from './components/WaitlistSection';
 import { Footer } from './components/Footer';
 import { Dashboard } from './components/Dashboard';
 import Clarity from '@microsoft/clarity';
-import { useAuth } from './hooks/useAuth';
+import { AuthProvider } from './contexts/AuthContext';
+import { useAuth } from './hooks/useAuthHook';
+import { Toaster } from 'react-hot-toast';
 
 // Protected Route component
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
@@ -42,51 +44,58 @@ const Home = () => {
 };
 
 function App() {
-  const { session } = useAuth();
-
   useEffect(() => {
     // Initialize Clarity
     Clarity.init(import.meta.env.VITE_CLARITY_ID);
   }, []);
 
   return (
-    <BrowserRouter>
-      <ThemeProvider>
-        <TextProvider>
-          <main className="min-h-screen bg-base-100 relative">
-            <Routes>
-              <Route 
-                path="/" 
-                element={
-                  <>
-                    <Navbar />
-                    <Home />
-                  </>
-                } 
-              />
-              <Route 
-                path="/login" 
-                element={
-                  <>
-                    <Navbar />
-                    {session ? <Navigate to="/dashboard" replace /> : <Login />}
-                  </>
-                }
-              />
-              <Route
-                path="/dashboard/*"
-                element={
-                  <ProtectedRoute>
-                    <Dashboard />
-                  </ProtectedRoute>
-                }
-              />
-            </Routes>
-          </main>
-        </TextProvider>
-      </ThemeProvider>
-    </BrowserRouter>
+    <AuthProvider>
+      <BrowserRouter>
+        <ThemeProvider>
+          <TextProvider>
+            <Toaster position="top-right" />
+            <main className="min-h-screen bg-base-100 relative">
+              <Routes>
+                <Route 
+                  path="/" 
+                  element={
+                    <>
+                      <Navbar />
+                      <Home />
+                    </>
+                  } 
+                />
+                <Route 
+                  path="/login" 
+                  element={
+                    <>
+                      <Navbar />
+                      <AuthRoute />
+                    </>
+                  }
+                />
+                <Route
+                  path="/dashboard/*"
+                  element={
+                    <ProtectedRoute>
+                      <Dashboard />
+                    </ProtectedRoute>
+                  }
+                />
+              </Routes>
+            </main>
+          </TextProvider>
+        </ThemeProvider>
+      </BrowserRouter>
+    </AuthProvider>
   );
 }
+
+// Auth Route component to handle login/redirect logic
+const AuthRoute = () => {
+  const { session } = useAuth();
+  return session ? <Navigate to="/dashboard" replace /> : <Login />;
+};
 
 export default App;

@@ -1,20 +1,21 @@
 import { useState } from "react";
-import { useAuth } from "../hooks/useAuth";
+import { useAuth } from "../hooks/useAuthHook";
+import { toast } from "react-hot-toast";
 
 export const Login = () => {
   const { signIn, loading } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError('');
+    
     try {
-      const { error: signInError } = await signIn(email, password);
-      if (signInError) throw signInError;
+      const { error } = await signIn(email, password);
+      if (error) throw error;
+      toast.success('Login realizado com sucesso!');
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Erro ao fazer login');
+      toast.error(err instanceof Error ? err.message : 'Erro ao fazer login');
     }
   };
 
@@ -31,11 +32,6 @@ export const Login = () => {
       <div className="card w-96 bg-base-100 shadow-xl">
         <div className="card-body">
           <h2 className="card-title justify-center text-2xl font-bold">Login</h2>
-          {error && (
-            <div className="alert alert-error">
-              <span>{error}</span>
-            </div>
-          )}
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="form-control">
               <input 
