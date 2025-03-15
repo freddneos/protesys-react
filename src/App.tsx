@@ -1,11 +1,11 @@
-import React from 'react';
 import Navbar from './components/Navbar';
+import { Hero } from './components/Hero';
 
 function App() {
   return (
-    <div className="min-h-screen bg-light text-neutral">
+    <div className="min-h-screen bg-base-100 text-base-content">
       <Navbar />
-      {/* Landing page sections will be implemented here as separate components with 100vh each */}
+      <Hero />
     </div>
   );
 }
