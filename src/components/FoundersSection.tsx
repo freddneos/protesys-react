@@ -24,12 +24,12 @@ const FounderCard = ({ name, role, bio, image, icon: Icon, index }: FounderCardP
     <motion.div
       whileHover={{ y: -5 }}
       transition={{ type: "spring", stiffness: 300, damping: 20 }}
-      className="card bg-base-200 relative overflow-hidden rounded-[30px] backdrop-blur-sm h-[310px]"
+      className="card bg-base-200 relative overflow-hidden rounded-[30px] backdrop-blur-sm"
     >
       <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-secondary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
       
-      <div className="card-body p-8 relative">
-        <div className="flex flex-col md:flex-row gap-8 items-center md:items-start">
+      <div className="card-body p-6 sm:p-8 relative">
+        <div className="flex flex-col md:flex-row gap-6 md:gap-8 items-center md:items-start">
           <motion.div 
             className="relative"
             whileHover={{ scale: 1.05 }}
@@ -62,18 +62,18 @@ const FounderCard = ({ name, role, bio, image, icon: Icon, index }: FounderCardP
             </div>
           </motion.div>
           
-          <div className="flex-1 text-center md:text-left">
+          <div className="flex-1 text-center md:text-left space-y-4">
             <motion.div
               initial={{ opacity: 0, y: 10 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.3 }}
             >
-              <h3 className="text-3xl font-bold mb-2 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+              <h3 className="text-2xl sm:text-3xl font-bold mb-2 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
                 {name}
               </h3>
-              <p className="text-lg font-medium text-base-content/80 mb-6">{role}</p>
-              <p className="text-base-content/70 leading-relaxed text-sm">
+              <p className="text-base sm:text-lg font-medium text-base-content/80 mb-4">{role}</p>
+              <p className="text-base-content/70 leading-relaxed text-sm sm:text-base">
                 {bio}
               </p>
               
