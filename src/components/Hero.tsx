@@ -156,7 +156,7 @@ export const Hero = () => {
           </motion.div>
 
           <motion.div 
-            className="text-lg md:text-xl lg:text-2xl text-base-content/80 mb-12 h-24 flex items-center justify-center"
+            className="hidden md:flex text-lg md:text-xl lg:text-2xl text-base-content/80 mb-12 h-24 items-center justify-center"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.6, duration: 1 }}
