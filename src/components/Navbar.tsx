@@ -96,9 +96,9 @@ const Navbar: React.FC = () => {
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             >
               {isMobileMenuOpen ? (
-                <UilTimes size={24} className="w-6 h-6" />
+                <UilTimes size={24} color="currentColor" className="w-6 h-6" />
               ) : (
-                <UilBars size={24} className="w-6 h-6" />
+                <UilBars size={24} color="currentColor" className="w-6 h-6" />
               )}
             </button>
           </div>

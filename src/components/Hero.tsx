@@ -99,7 +99,7 @@ export const Hero = () => {
           }}
           transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
         >
-          <UilCog className="text-primary w-16 h-16 opacity-20" />
+          <UilCog size={64} color="currentColor" className="text-primary w-16 h-16 opacity-20" />
         </motion.div>
       </motion.div>
       
@@ -115,7 +115,7 @@ export const Hero = () => {
           }}
           transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
         >
-          <UilClinicMedical className="text-secondary w-20 h-20 opacity-20" />
+          <UilClinicMedical size={80} color="currentColor" className="text-secondary w-20 h-20 opacity-20" />
         </motion.div>
       </motion.div>
 
