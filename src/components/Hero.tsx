@@ -4,7 +4,7 @@ import Typewriter from "typewriter-effect";
 import { UilClinicMedical, UilCog } from '@iconscout/react-unicons';
 import { useTexts } from '../hooks/useTexts';
 import { useTheme } from '../hooks/useTheme';
-import React, { useRef, useEffect, useState } from "react";
+import React, { useRef, useEffect } from "react";
 
 // Função auxiliar para renderizar HTML de forma segura
 const RenderHTML: React.FC<{ html: string; className?: string }> = ({ html, className }) => {
@@ -37,9 +37,9 @@ export const Hero = () => {
   };
 
   // Função para abrir modal de agendamento de demo ou redirecionar para calendly
-  const openDemoSchedule = () => {
-    window.open('https://calendly.com/protesys/demo', '_blank');
-  };
+  // const openDemoSchedule = () => {
+  //   window.open('https://calendly.com/protesys/demo', '_blank');
+  // };
   
   // Efeito de partículas flutuantes
   const particles = Array.from({ length: 20 }).map((_, i) => ({

@@ -8,6 +8,8 @@ import {
   TickSquare
 } from "iconsax-react";
 import { useTexts } from '../hooks/useTexts';
+import { useWaitlistSubmission } from '../hooks/useWaitlistSubmission';
+import { useState, useEffect } from 'react';
 
 interface WaitlistForm {
   name: string;
@@ -60,12 +62,30 @@ const FormField = ({
 
 export const WaitlistSection = () => {
   const texts = useTexts();
-  const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<WaitlistForm>();
+  const { submitToWaitlist } = useWaitlistSubmission();
+  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
+  const { register, handleSubmit, formState: { errors, isSubmitting }, reset } = useForm<WaitlistForm>();
+  const [sourceParam, setSourceParam] = useState<string | null>(null);
+
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const source = urlParams.get('source');
+    setSourceParam(source);
+  }, []);
 
   const onSubmit = async (data: WaitlistForm) => {
-    // TODO: Implement form submission
-    console.log(data);
-    await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate API call
+    try {
+      setSubmitStatus('idle');
+      await submitToWaitlist({
+        ...data,
+        source: sourceParam || undefined
+      });
+      setSubmitStatus('success');
+      reset(); // Clear form after successful submission
+    } catch (error) {
+      console.error('Submission error:', error);
+      setSubmitStatus('error');
+    }
   };
 
   return (
@@ -271,6 +291,27 @@ export const WaitlistSection = () => {
                       </span>
                     </button>
                   </motion.div>
+
+                  {submitStatus === 'success' && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="alert alert-success"
+                    >
+                      <TickSquare variant="Bold" />
+                      <span>Formulário enviado com sucesso! Entraremos em contato em breve.</span>
+                    </motion.div>
+                  )}
+
+                  {submitStatus === 'error' && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="alert alert-error"
+                    >
+                      <span>Ocorreu um erro ao enviar o formulário. Por favor, tente novamente.</span>
+                    </motion.div>
+                  )}
 
                   <motion.p 
                     initial={{ opacity: 0 }}

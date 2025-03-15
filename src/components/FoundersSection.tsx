@@ -24,7 +24,7 @@ const FounderCard = ({ name, role, bio, image, icon: Icon, index }: FounderCardP
     <motion.div
       whileHover={{ y: -5 }}
       transition={{ type: "spring", stiffness: 300, damping: 20 }}
-      className="card bg-base-200 relative overflow-hidden rounded-[30px] backdrop-blur-sm"
+      className="card bg-base-200 relative overflow-hidden rounded-[30px] backdrop-blur-sm h-[310px]"
     >
       <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-secondary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
       
@@ -40,7 +40,7 @@ const FounderCard = ({ name, role, bio, image, icon: Icon, index }: FounderCardP
               <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-secondary/20 rounded-full blur-md transform group-hover:scale-110 transition-transform duration-500" />
               
               <div className="avatar relative">
-                <div className="w-40 h-40 rounded-full ring-2 ring-base-content/5 ring-offset-base-100 ring-offset-4 overflow-hidden">
+                <div className="w-32 h-32 rounded-full ring-2 ring-base-content/5 ring-offset-base-100 ring-offset-4 overflow-hidden">
                   <img
                     src={image}
                     alt={name}
@@ -73,12 +73,12 @@ const FounderCard = ({ name, role, bio, image, icon: Icon, index }: FounderCardP
                 {name}
               </h3>
               <p className="text-lg font-medium text-base-content/80 mb-6">{role}</p>
-              <p className="text-base-content/70 leading-relaxed text-lg">
+              <p className="text-base-content/70 leading-relaxed text-sm">
                 {bio}
               </p>
               
               {/* Social links or additional info */}
-              <div className="mt-6 flex gap-4 items-center justify-center md:justify-start">
+              {/* <div className="mt-6 flex gap-4 items-center justify-center md:justify-start">
                 <motion.a
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.95 }}
@@ -89,7 +89,7 @@ const FounderCard = ({ name, role, bio, image, icon: Icon, index }: FounderCardP
                     <path d="M22.23 0H1.77C.8 0 0 .8 0 1.77v20.46C0 23.2.8 24 1.77 24h20.46c.98 0 1.77-.8 1.77-1.77V1.77C24 .8 23.2 0 22.23 0zM7.27 20.1H3.65V9.24h3.62V20.1zM5.47 7.7c-1.15 0-2.08-.95-2.08-2.1 0-1.15.93-2.1 2.08-2.1 1.15 0 2.08.95 2.08 2.1 0 1.15-.93 2.1-2.08 2.1zm14.63 12.4h-3.62v-5.7c0-1.35-.03-3.1-1.88-3.1-1.88 0-2.17 1.48-2.17 3v5.8h-3.62V9.24h3.48v1.6h.05c.48-.92 1.65-1.88 3.4-1.88 3.65 0 4.32 2.4 4.32 5.53v5.61z"></path>
                   </svg>
                 </motion.a>
-              </div>
+              </div> */}
             </motion.div>
           </div>
         </div>

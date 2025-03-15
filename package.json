@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@iconscout/react-unicons": "^2.2.4",
+    "@types/uuid": "^10.0.0",
     "framer-motion": "^10.18.0",
     "iconsax-react": "^0.0.8",
     "lottie-react": "^2.4.0",
@@ -18,7 +19,8 @@
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.54.2",
     "swiper": "^11.2.5",
-    "typewriter-effect": "^2.21.0"
+    "typewriter-effect": "^2.21.0",
+    "uuid": "^11.1.0"
   },
   "devDependencies": {
     "@types/react": "^18.2.37",

@@ -33,7 +33,7 @@ export const Footer = () => {
       >
         <div className="grid grid-flow-col gap-4">
           <a 
-            href="https://instagram.com/protesys" 
+            href="https://instagram.com/protesysgestao" 
             target="_blank" 
             rel="noopener noreferrer"
             className="btn btn-ghost btn-square"
@@ -41,7 +41,7 @@ export const Footer = () => {
             <Instagram size={24} className="text-primary" variant="Bold" />
           </a>
           <a 
-            href="https://facebook.com/protesys" 
+            href="https://facebook.com/protesysgestao" 
             target="_blank" 
             rel="noopener noreferrer"
             className="btn btn-ghost btn-square"
@@ -49,7 +49,7 @@ export const Footer = () => {
             <Facebook size={24} className="text-primary" variant="Bold" />
           </a>
           <a 
-            href="https://wa.me/5511999999999" 
+            href='https://api.whatsapp.com/send?phone=5521985466095&text=Ol%C3%A1%20gostaria%20de%20mais%20informa%C3%A7%C3%B5es%20sobre%20o%20Protesys.' 
             target="_blank" 
             rel="noopener noreferrer"
             className="btn btn-ghost btn-square"
