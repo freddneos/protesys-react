@@ -55,8 +55,24 @@ function App() {
         <TextProvider>
           <main className="min-h-screen bg-base-100 relative">
             <Routes>
-              <Route path="/" element={session ? <Navigate to="/dashboard" replace /> : <><Navbar /><Home /></>} />
-              <Route path="/login" element={session ? <Navigate to="/dashboard" replace /> : <><Navbar /><Login /></>} />
+              <Route 
+                path="/" 
+                element={
+                  <>
+                    <Navbar />
+                    <Home />
+                  </>
+                } 
+              />
+              <Route 
+                path="/login" 
+                element={
+                  <>
+                    <Navbar />
+                    {session ? <Navigate to="/dashboard" replace /> : <Login />}
+                  </>
+                }
+              />
               <Route
                 path="/dashboard/*"
                 element={

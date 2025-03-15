@@ -99,7 +99,7 @@ const FounderCard = ({ name, role, bio, image, icon: Icon, index }: FounderCardP
 );
 
 export const FoundersSection = () => {
-  const texts = useTexts();
+  const { texts } = useTexts();
   
   return (
     <section id="founders" className="relative min-h-screen bg-base-100 py-32">

@@ -1,19 +1,11 @@
-import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 import { useAuth } from "../hooks/useAuth";
 
 export const Login = () => {
-  const { signIn, session, loading } = useAuth();
-  const navigate = useNavigate();
+  const { signIn, loading } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-
-  useEffect(() => {
-    if (session && !loading) {
-      navigate('/dashboard', { replace: true });
-    }
-  }, [session, loading, navigate]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -32,10 +24,6 @@ export const Login = () => {
         <div className="loading loading-spinner loading-lg"></div>
       </div>
     );
-  }
-
-  if (session) {
-    return null;
   }
 
   return (

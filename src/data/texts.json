@@ -172,5 +172,60 @@
       "location": "São Paulo, SP - Brasil"
     },
     "copyright": "Copyright © {year} - Todos os direitos reservados à Protesys"
+  },
+  "dashboard": {
+    "metrics": {
+      "title": "Dashboard Overview",
+      "cards": {
+        "patients": {
+          "title": "Total Patients",
+          "description": "more than last month"
+        },
+        "activeCases": {
+          "title": "Active Cases",
+          "description": "Currently in progress"
+        },
+        "prosthetists": {
+          "title": "Total Prosthetists",
+          "description": "Active professionals"
+        },
+        "delayedCases": {
+          "title": "Delayed Cases",
+          "description": "Requiring attention"
+        }
+      }
+    },
+    "navigation": {
+      "metrics": "Metrics",
+      "profile": "Profile",
+      "settings": "Settings"
+    },
+    "user": {
+      "logout": "Logout"
+    },
+    "profile": {
+      "title": "Profile",
+      "email": "Email",
+      "personalInfo": "Personal Information",
+      "notifications": "Notification Preferences",
+      "security": "Security Settings"
+    },
+    "settings": {
+      "title": "Settings",
+      "appearance": "Appearance",
+      "language": "Language",
+      "theme": "Theme",
+      "notifications": {
+        "title": "Notifications",
+        "email": "Email Notifications",
+        "push": "Push Notifications",
+        "sms": "SMS Notifications"
+      },
+      "security": {
+        "title": "Security",
+        "changePassword": "Change Password",
+        "twoFactor": "Two-Factor Authentication"
+      }
+    }
   }
 }

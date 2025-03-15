@@ -46,7 +46,7 @@ const FeatureCard = ({ feature, index }: { feature: { title: string; description
 );
 
 export const About = () => {
-  const texts = useTexts();
+  const { texts } = useTexts();
   
   return (
     <section id="about" className="relative min-h-screen bg-base-200 py-32 flex items-center">

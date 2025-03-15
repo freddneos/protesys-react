@@ -6,5 +6,5 @@ export const useTexts = () => {
   if (context === undefined) {
     throw new Error('useTexts must be used within a TextProvider');
   }
-  return context.texts;
+  return { texts: context.texts };
 };

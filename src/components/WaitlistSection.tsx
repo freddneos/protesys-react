@@ -62,7 +62,7 @@ const FormField = ({
 );
 
 export const WaitlistSection = () => {
-  const texts = useTexts();
+  const { texts } = useTexts();
   const { submitToWaitlist } = useWaitlistSubmission();
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
   const { register, handleSubmit, formState: { errors, isSubmitting }, reset } = useForm<WaitlistForm>();

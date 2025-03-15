@@ -12,7 +12,7 @@ const RenderHTML: React.FC<{ html: string; className?: string }> = ({ html, clas
 };
 
 export const Hero = () => {
-  const texts = useTexts();
+  const { texts } = useTexts();
   const { theme } = useTheme();
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, amount: 0.3 });

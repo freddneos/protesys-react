@@ -106,7 +106,7 @@ const SolutionCard = ({
 );
 
 export const SolutionsSection = () => {
-  const texts = useTexts();
+  const { texts } = useTexts();
   const [expandedIndex, setExpandedIndex] = useState<number | null>(0);
 
   return (

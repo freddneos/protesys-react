@@ -1,11 +1,18 @@
-import { DashboardLayout } from "./DashboardLayout";
-import { DashboardMetrics } from "./DashboardMetrics";
+import { Routes, Route, Navigate } from 'react-router-dom';
+import { DashboardLayout } from './DashboardLayout';
+import { DashboardMetrics } from './DashboardMetrics';
+import { DashboardProfile } from './DashboardProfile';
+import { DashboardSettings } from './DashboardSettings';
 
 export const Dashboard = () => {
   return (
-    <DashboardLayout>
-      <h1 className="text-3xl font-bold mb-6">Dashboard</h1>
-      <DashboardMetrics />
-    </DashboardLayout>
+    <Routes>
+      <Route element={<DashboardLayout />}>
+        <Route index element={<Navigate to="metrics" replace />} />
+        <Route path="metrics" element={<DashboardMetrics />} />
+        <Route path="profile" element={<DashboardProfile />} />
+        <Route path="settings" element={<DashboardSettings />} />
+      </Route>
+    </Routes>
   );
 };

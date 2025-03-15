@@ -9,7 +9,7 @@ import { motion } from "framer-motion";
 import { useTexts } from '../hooks/useTexts';
 
 export const Footer = () => {
-  const texts = useTexts();
+  const { texts } = useTexts();
   const currentYear = new Date().getFullYear();
 
   return (

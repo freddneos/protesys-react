@@ -63,7 +63,7 @@ const FeatureCard = ({ icon: Icon, title, description, index }: FeatureCardProps
 };
 
 export const Features = () => {
-  const texts = useTexts();
+  const { texts } = useTexts();
   
   return (
     <section id="features" className="relative py-32 px-4 bg-base-100">

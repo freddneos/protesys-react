@@ -1,7 +1,15 @@
 import { useEffect, useState } from "react";
 import { supabase } from "../lib/supabase";
+import { useTexts } from "../hooks/useTexts";
+import {
+  UserGroupIcon,
+  ClipboardDocumentCheckIcon,
+  UserIcon,
+  ExclamationCircleIcon,
+} from "@heroicons/react/24/outline";
 
 export const DashboardMetrics = () => {
+  const { texts } = useTexts();
   const [totalProcesses, setTotalProcesses] = useState(0);
   const [totalClients, setTotalClients] = useState(0);
   const [totalProsthetists, setTotalProsthetists] = useState(0);
@@ -38,25 +46,60 @@ export const DashboardMetrics = () => {
   }, []);
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      <div className="card bg-primary text-white p-6">
-        <h3 className="text-xl font-bold">Total Processes</h3>
-        <p className="text-3xl">{totalProcesses}</p>
-      </div>
+    <div className="p-6">
+      <h1 className="text-2xl font-bold mb-6 text-primary">{texts.dashboard.metrics.title}</h1>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="stat bg-gradient-to-br from-primary/10 to-primary/5 shadow-xl rounded-2xl p-6 border border-primary/20 transition-all hover:scale-105">
+          <div className="flex items-center gap-4">
+            <div className="p-3 bg-primary/20 rounded-xl">
+              <UserGroupIcon className="w-8 h-8 text-primary" />
+            </div>
+            <div>
+              <div className="stat-title text-base-content/70">{texts.dashboard.metrics.cards.patients.title}</div>
+              <div className="stat-value text-primary">{totalClients}</div>
+              <div className="stat-desc text-success">↗︎ 21% {texts.dashboard.metrics.cards.patients.description}</div>
+            </div>
+          </div>
+        </div>
 
-      <div className="card bg-secondary text-white p-6">
-        <h3 className="text-xl font-bold">Total Clients</h3>
-        <p className="text-3xl">{totalClients}</p>
-      </div>
+        <div className="stat bg-gradient-to-br from-secondary/10 to-secondary/5 shadow-xl rounded-2xl p-6 border border-secondary/20 transition-all hover:scale-105">
+          <div className="flex items-center gap-4">
+            <div className="p-3 bg-secondary/20 rounded-xl">
+              <ClipboardDocumentCheckIcon className="w-8 h-8 text-secondary" />
+            </div>
+            <div>
+              <div className="stat-title text-base-content/70">{texts.dashboard.metrics.cards.activeCases.title}</div>
+              <div className="stat-value text-secondary">{totalProcesses}</div>
+              <div className="stat-desc">{texts.dashboard.metrics.cards.activeCases.description}</div>
+            </div>
+          </div>
+        </div>
 
-      <div className="card bg-blue-500 text-white p-6">
-        <h3 className="text-xl font-bold">Total Prosthetists</h3>
-        <p className="text-3xl">{totalProsthetists}</p>
-      </div>
+        <div className="stat bg-gradient-to-br from-accent/10 to-accent/5 shadow-xl rounded-2xl p-6 border border-accent/20 transition-all hover:scale-105">
+          <div className="flex items-center gap-4">
+            <div className="p-3 bg-accent/20 rounded-xl">
+              <UserIcon className="w-8 h-8 text-accent" />
+            </div>
+            <div>
+              <div className="stat-title text-base-content/70">{texts.dashboard.metrics.cards.prosthetists.title}</div>
+              <div className="stat-value text-accent">{totalProsthetists}</div>
+              <div className="stat-desc">{texts.dashboard.metrics.cards.prosthetists.description}</div>
+            </div>
+          </div>
+        </div>
 
-      <div className="card bg-red-500 text-white p-6 col-span-1 md:col-span-2">
-        <h3 className="text-xl font-bold">Delayed Processes</h3>
-        <p className="text-3xl">{delayedProcesses}</p>
+        <div className="stat bg-gradient-to-br from-error/10 to-error/5 shadow-xl rounded-2xl p-6 border border-error/20 transition-all hover:scale-105">
+          <div className="flex items-center gap-4">
+            <div className="p-3 bg-error/20 rounded-xl">
+              <ExclamationCircleIcon className="w-8 h-8 text-error" />
+            </div>
+            <div>
+              <div className="stat-title text-base-content/70">{texts.dashboard.metrics.cards.delayedCases.title}</div>
+              <div className="stat-value text-error">{delayedProcesses}</div>
+              <div className="stat-desc">{texts.dashboard.metrics.cards.delayedCases.description}</div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );

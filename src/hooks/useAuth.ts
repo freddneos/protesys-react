@@ -49,10 +49,12 @@ export const useAuth = () => {
   };
 
   const signIn = async (email: string, password: string) => {
-    setLoading(true);
-    const result = await supabase.auth.signInWithPassword({ email, password });
-    setLoading(false);
-    return result;
+    try {
+      setLoading(true);
+      return await supabase.auth.signInWithPassword({ email, password });
+    } finally {
+      setLoading(false);
+    }
   };
 
   const signOut = async () => {
