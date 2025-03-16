@@ -16,7 +16,7 @@ export const Footer = () => {
   const currentYear = new Date().getFullYear();
   const isDev = import.meta.env.DEV;
 
-  const themes: Theme[] = [
+  const themes: string[] = [
     "light", "dark", "cupcake", "bumblebee", "emerald", "corporate", "synthwave", 
     "retro", "cyberpunk", "valentine", "halloween", "garden", "forest", "aqua", 
     "lofi", "pastel", "fantasy", "wireframe", "black", "luxury", "dracula", 
