@@ -2,6 +2,7 @@ import { useForm } from "react-hook-form";
 import { useTexts } from "../hooks/useTexts";
 import { Client, CreateClientInput } from "../types/client";
 import { toast } from "react-hot-toast";
+import { useEffect } from "react";
 
 interface ClientModalProps {
   isOpen: boolean;
@@ -12,23 +13,29 @@ interface ClientModalProps {
 
 export const ClientModal = ({ isOpen, onClose, onSubmit, client }: ClientModalProps) => {
   const { texts } = useTexts();
-  const { register, handleSubmit, formState: { errors }, reset } = useForm<CreateClientInput>({
-    defaultValues: client ? {
-      first_name: client.first_name,
-      last_name: client.last_name,
-      cpf_cnpj: client.cpf_cnpj || undefined,
-      phone: client.phone || undefined,
-      birth_date: client.birth_date || undefined,
-      address: client.address || undefined
-    } : {
-      first_name: "",
-      last_name: "",
-      cpf_cnpj: "",
-      phone: "",
-      birth_date: "",
-      address: ""
+  const { register, handleSubmit, formState: { errors }, reset } = useForm<CreateClientInput>();
+
+  useEffect(() => {
+    if (client) {
+      reset({
+        first_name: client.first_name,
+        last_name: client.last_name,
+        cpf_cnpj: client.cpf_cnpj || "",
+        phone: client.phone || "",
+        birth_date: client.birth_date || "",
+        address: client.address || ""
+      });
+    } else {
+      reset({
+        first_name: "",
+        last_name: "",
+        cpf_cnpj: "",
+        phone: "",
+        birth_date: "",
+        address: ""
+      });
     }
-  });
+  }, [client, reset]);
 
   const handleFormSubmit = async (data: CreateClientInput) => {
     try {
