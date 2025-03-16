@@ -7,13 +7,46 @@ import {
 } from "iconsax-react";
 import { motion } from "framer-motion";
 import { useTexts } from '../hooks/useTexts';
+import { useTheme } from '../hooks/useTheme';
+import { Theme } from '../contexts/ThemeContext';
 
 export const Footer = () => {
   const { texts } = useTexts();
+  const { theme, setTheme } = useTheme();
   const currentYear = new Date().getFullYear();
+  const isDev = import.meta.env.DEV;
+
+  const themes: Theme[] = [
+    "light", "dark", "cupcake", "bumblebee", "emerald", "corporate", "synthwave", 
+    "retro", "cyberpunk", "valentine", "halloween", "garden", "forest", "aqua", 
+    "lofi", "pastel", "fantasy", "wireframe", "black", "luxury", "dracula", 
+    "cmyk", "autumn", "business", "acid", "lemonade", "night", "coffee", "winter"
+  ];
 
   return (
     <footer className="footer footer-center p-10 bg-base-200 text-base-content rounded">
+      {/* Theme selector - only visible in dev mode */}
+      {isDev && (
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="w-full flex justify-center"
+        >
+          <select 
+            className="select select-bordered w-full max-w-xs"
+            value={theme}
+            onChange={(e) => setTheme(e.target.value as Theme)}
+          >
+            {themes.map((t) => (
+              <option key={t} value={t}>
+                Theme: {t}
+              </option>
+            ))}
+          </select>
+        </motion.div>
+      )}
+
       <motion.div 
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}

@@ -60,7 +60,7 @@ export const DashboardSettings = () => {
           <div className="card-body">
             <h2 className="card-title">{texts.dashboard.settings.security.title}</h2>
             <div className="space-y-4">
-              <button className="btn btn-primary rounded-full">
+              <button className="btn btn-primary rounded-xl">
                 {texts.dashboard.settings.security.changePassword}
               </button>
               <div className="form-control">

@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Theme, ThemeContext } from '../contexts/ThemeContext';
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [theme, setTheme] = useState<Theme>('corporate');
+  const [theme, setTheme] = useState<Theme>('winter');
 
   // Effect for applying theme changes
   useEffect(() => {

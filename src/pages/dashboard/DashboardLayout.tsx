@@ -34,13 +34,13 @@ export const DashboardLayout = () => {
           </span>
         </div>
         <div className="flex items-center gap-4">
-          <div className="px-4 py-2 rounded-full bg-base-200 flex items-center gap-2">
-            <div className="w-2 h-2 bg-success rounded-full"></div>
+          <div className="px-4 py-2 rounded-xl bg-base-200 flex items-center gap-2">
+            <div className="w-2 h-2 bg-success rounded-xl"></div>
             <span className="text-sm font-medium">{session?.user.email}</span>
           </div>
           <button
             onClick={handleLogout}
-            className="btn btn-ghost btn-sm rounded-full text-error hover:bg-error/10 transition-colors"
+            className="btn btn-ghost btn-sm rounded-xl text-error hover:bg-error/10 transition-colors"
           >
             <RiLogoutBoxLine className="w-5 h-5" />
             {texts.dashboard.user.logout}

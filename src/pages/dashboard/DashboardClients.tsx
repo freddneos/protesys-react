@@ -104,7 +104,7 @@ export const DashboardClients = () => {
           {texts.dashboard.clients.title}
         </h1>
         <button 
-          className="btn btn-primary gap-2 rounded-full"
+          className="btn btn-primary gap-2 rounded-xl"
           onClick={() => setIsModalOpen(true)}
         >
           <UserAdd size={20} />
@@ -127,8 +127,8 @@ export const DashboardClients = () => {
           <div className="loading loading-spinner loading-lg"></div>
         </div>
       ) : clients.length > 0 ? (
-        <div className="overflow-x-auto">
-          <table className="table w-full">
+    <div className="overflow-x-auto rounded-box border border-base-content/5 bg-base-100">
+      <table className="table w-full">
             <thead>
               <tr>
                 <th>{texts.dashboard.clients.table.name}</th>
