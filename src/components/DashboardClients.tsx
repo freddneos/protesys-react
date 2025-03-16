@@ -108,12 +108,12 @@ export const DashboardClients = () => {
       <div className="overflow-x-auto rounded-box border border-base-content/5 bg-base-100">
       <table className="table">
           <thead>
-            <tr className="bg-base-200">
-              <th>{texts.dashboard.clients.table.name}</th>
-              <th>{texts.dashboard.clients.table.cpf}</th>
-              <th>{texts.dashboard.clients.table.phone}</th>
-              <th>{texts.dashboard.clients.table.birth_date}</th>
-              <th>{texts.dashboard.clients.table.actions}</th>
+            <tr className="bg-primary">
+              <th className="text-base-200">{texts.dashboard.clients.table.name}</th>
+              <th className="text-base-200">{texts.dashboard.clients.table.cpf}</th>
+              <th className="text-base-200">{texts.dashboard.clients.table.phone}</th>
+              <th className="text-base-200">{texts.dashboard.clients.table.birth_date}</th>
+              <th className="text-base-200">{texts.dashboard.clients.table.actions}</th>
             </tr>
           </thead>
           <tbody>
