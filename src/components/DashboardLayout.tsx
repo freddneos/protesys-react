@@ -1,7 +1,7 @@
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { RiUser3Line, RiSettings4Line, RiBarChartLine, RiLogoutBoxLine, RiUserSearchLine } from 'react-icons/ri';
-import { useAuth } from '../hooks/useAuthHook';
+import { useAuth } from '../hooks/useAuth';
 import { useTexts } from '../hooks/useTexts';
 
 export const DashboardLayout = () => {

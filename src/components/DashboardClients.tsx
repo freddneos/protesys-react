@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { useTexts } from "../hooks/useTexts";
 import { useClients } from "../hooks/useClients";
+import { useAuth } from "../hooks/useAuth";
 import { ClientModal } from "./ClientModal";
 import { Client, CreateClientInput } from "../types/client";
 import { toast } from "react-hot-toast";
@@ -10,6 +11,7 @@ import debounce from "lodash/debounce";
 export const DashboardClients = () => {
   const { texts } = useTexts();
   const { fetchClients, createClient, updateClient, deleteClient } = useClients();
+  const { validateSession, resetAuth } = useAuth();
   
   const [clients, setClients] = useState<Client[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -17,13 +19,33 @@ export const DashboardClients = () => {
   const [selectedClient, setSelectedClient] = useState<Client | undefined>();
   const [isLoading, setIsLoading] = useState(false);
 
+  const validateAndExecute = async (operation: () => Promise<any>) => {
+    try {
+      const isValid = await validateSession();
+      if (!isValid) {
+        toast.error("Sessão expirada. Por favor, faça login novamente.");
+        await resetAuth();
+        return false;
+      }
+      await operation();
+      return true;
+    } catch (error) {
+      return false;
+    }
+  };
+
   // Fetch clients with debounced search
   const debouncedSearch = useCallback(
     debounce(async (search: string) => {
       setIsLoading(true);
-      const results = await fetchClients(search);
-      setClients(results);
-      setIsLoading(false);
+      try {
+        await validateAndExecute(async () => {
+          const results = await fetchClients(search);
+          setClients(results);
+        });
+      } finally {
+        setIsLoading(false);
+      }
     }, 300),
     []
   );
@@ -37,9 +59,11 @@ export const DashboardClients = () => {
 
   const handleCreateClient = async (data: CreateClientInput) => {
     try {
-      await createClient(data);
-      toast.success(texts.dashboard.clients.notifications.createSuccess);
-      debouncedSearch(searchTerm);
+      await validateAndExecute(async () => {
+        await createClient(data);
+        toast.success(texts.dashboard.clients.notifications.createSuccess);
+        debouncedSearch(searchTerm);
+      });
     } catch (error) {
       toast.error(texts.dashboard.clients.notifications.createError);
     }
@@ -49,10 +73,12 @@ export const DashboardClients = () => {
     if (!selectedClient) return;
     
     try {
-      await updateClient({ id: selectedClient.id, ...data });
-      toast.success(texts.dashboard.clients.notifications.updateSuccess);
-      debouncedSearch(searchTerm);
-      setSelectedClient(undefined);
+      await validateAndExecute(async () => {
+        await updateClient({ id: selectedClient.id, ...data });
+        toast.success(texts.dashboard.clients.notifications.updateSuccess);
+        debouncedSearch(searchTerm);
+        setSelectedClient(undefined);
+      });
     } catch (error) {
       toast.error(texts.dashboard.clients.notifications.updateError);
     }
@@ -61,9 +87,11 @@ export const DashboardClients = () => {
   const handleDeleteClient = async (client: Client) => {
     if (window.confirm('Tem certeza que deseja excluir este paciente?')) {
       try {
-        await deleteClient(client.id);
-        toast.success(texts.dashboard.clients.notifications.deleteSuccess);
-        debouncedSearch(searchTerm);
+        await validateAndExecute(async () => {
+          await deleteClient(client.id);
+          toast.success(texts.dashboard.clients.notifications.deleteSuccess);
+          debouncedSearch(searchTerm);
+        });
       } catch (error) {
         toast.error(texts.dashboard.clients.notifications.deleteError);
       }

@@ -1,7 +1,7 @@
 import { useState, useCallback } from 'react';
 import { supabase } from '../lib/supabase';
 import { Client, CreateClientInput, UpdateClientInput } from '../types/client';
-import { useAuth } from './useAuthHook';
+import { useAuth } from './useAuth';
 
 export const useClients = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -9,6 +9,7 @@ export const useClients = () => {
   const { user } = useAuth();
 
   const fetchClients = useCallback(async (search?: string) => {
+    console.log(user, 'USER')
     if (!user?.user_metadata.company_id) {
       return [];
     }

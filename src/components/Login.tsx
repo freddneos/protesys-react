@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useAuth } from "../hooks/useAuthHook";
+import { useAuth } from "../hooks/useAuth";
 import { toast } from "react-hot-toast";
 
 export const Login = () => {
