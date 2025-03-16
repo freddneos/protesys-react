@@ -241,7 +241,8 @@
             "metrics": "Métricas",
             "profile": "Perfil",
             "settings": "Configurações",
-            "clients": "Pacientes"
+            "clients": "Pacientes",
+            "prosthetists": "Protéticos"
         },
         "user": {
             "logout": "Sair"
@@ -335,6 +336,64 @@
                 "updateError": "Erro ao atualizar paciente",
                 "deleteSuccess": "Paciente excluído com sucesso!",
                 "deleteError": "Erro ao excluir paciente"
+            }
+        },
+        "prosthetists": {
+            "title": "Gerenciar Protéticos",
+            "search": {
+                "placeholder": "Buscar por nome, CNPJ ou CPF...",
+                "noResults": "Nenhum protético encontrado"
+            },
+            "table": {
+                "name": "Nome",
+                "type": "Tipo",
+                "subtype": "Subtipo",
+                "document": "Documento",
+                "actions": "Ações"
+            },
+            "modal": {
+                "create": "Novo Protético",
+                "edit": "Editar Protético",
+                "form": {
+                    "name": {
+                        "label": "Nome",
+                        "placeholder": "Digite o nome",
+                        "required": "Nome é obrigatório"
+                    },
+                    "type": {
+                        "label": "Tipo",
+                        "placeholder": "Selecione o tipo",
+                        "required": "Tipo é obrigatório"
+                    },
+                    "subtype": {
+                        "label": "Subtipo",
+                        "placeholder": "Selecione o subtipo",
+                        "required": "Subtipo é obrigatório"
+                    },
+                    "cnpj": {
+                        "label": "CNPJ",
+                        "placeholder": "Digite o CNPJ",
+                        "invalid": "CNPJ inválido"
+                    },
+                    "cpf": {
+                        "label": "CPF",
+                        "placeholder": "Digite o CPF",
+                        "invalid": "CPF inválido"
+                    }
+                },
+                "buttons": {
+                    "save": "Salvar",
+                    "cancel": "Cancelar"
+                }
+            },
+            "notifications": {
+                "createSuccess": "Protético criado com sucesso!",
+                "createError": "Erro ao criar protético",
+                "updateSuccess": "Protético atualizado com sucesso!",
+                "updateError": "Erro ao atualizar protético",
+                "deleteSuccess": "Protético excluído com sucesso!",
+                "deleteError": "Erro ao excluir protético",
+                "deleteConfirm": "Tem certeza que deseja excluir este protético?"
             }
         }
     }
