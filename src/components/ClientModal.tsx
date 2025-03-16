@@ -13,7 +13,14 @@ interface ClientModalProps {
 export const ClientModal = ({ isOpen, onClose, onSubmit, client }: ClientModalProps) => {
   const { texts } = useTexts();
   const { register, handleSubmit, formState: { errors }, reset } = useForm<CreateClientInput>({
-    defaultValues: client || {
+    defaultValues: client ? {
+      first_name: client.first_name,
+      last_name: client.last_name,
+      cpf_cnpj: client.cpf_cnpj || undefined,
+      phone: client.phone || undefined,
+      birth_date: client.birth_date || undefined,
+      address: client.address || undefined
+    } : {
       first_name: "",
       last_name: "",
       cpf_cnpj: "",
@@ -28,7 +35,7 @@ export const ClientModal = ({ isOpen, onClose, onSubmit, client }: ClientModalPr
       await onSubmit(data);
       reset();
       onClose();
-    } catch (error) {
+    } catch {
       toast.error(texts.dashboard.clients.notifications.createError);
     }
   };
