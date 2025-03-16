@@ -1,32 +1,38 @@
 import { useState } from "react";
-import { useAuth } from "../hooks/useAuth";
+import { useNavigate, useLocation } from "react-router-dom";
 import { toast } from "react-hot-toast";
+import { useAuth } from "../hooks/useAuth";
 
 export const Login = () => {
-  const { signIn, loading } = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { signIn, isLoading } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  
+  // Get the page user was trying to visit before being redirected to login
+  const from = (location.state as { from?: { pathname: string } })?.from?.pathname || "/dashboard";
+  
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsSubmitting(true);
     
     try {
       const { error } = await signIn(email, password);
+      
       if (error) throw error;
+      
       toast.success('Login realizado com sucesso!');
+      // Navigate to original destination or dashboard
+      navigate(from, { replace: true });
     } catch (err) {
       toast.error(err instanceof Error ? err.message : 'Erro ao fazer login');
+    } finally {
+      setIsSubmitting(false);
     }
   };
-
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-base-200">
-        <div className="loading loading-spinner loading-lg"></div>
-      </div>
-    );
-  }
-
+  
   return (
     <div className="min-h-screen flex items-center justify-center bg-base-200">
       <div className="card w-96 bg-base-100 shadow-xl">
@@ -56,9 +62,9 @@ export const Login = () => {
             <button 
               className="btn btn-primary w-full" 
               type="submit"
-              disabled={loading}
+              disabled={isSubmitting || isLoading}
             >
-              {loading ? <span className="loading loading-spinner"></span> : 'Entrar'}
+              {isSubmitting || isLoading ? <span className="loading loading-spinner"></span> : 'Entrar'}
             </button>
           </form>
         </div>

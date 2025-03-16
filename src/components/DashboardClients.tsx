@@ -7,11 +7,13 @@ import { Client, CreateClientInput } from "../types/client";
 import { toast } from "react-hot-toast";
 import { UserAdd, Edit2, Trash } from "iconsax-react";
 import debounce from "lodash/debounce";
+import { useNavigate } from "react-router-dom";
 
 export const DashboardClients = () => {
   const { texts } = useTexts();
   const { fetchClients, createClient, updateClient, deleteClient } = useClients();
   const { validateSession, resetAuth } = useAuth();
+  const navigate = useNavigate();
   
   const [clients, setClients] = useState<Client[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -19,12 +21,17 @@ export const DashboardClients = () => {
   const [selectedClient, setSelectedClient] = useState<Client | undefined>();
   const [isLoading, setIsLoading] = useState(false);
 
-  const validateAndExecute = async (operation: () => Promise<any>) => {
+  const handleSessionError = useCallback(() => {
+    toast.error(texts.dashboard.clients.notifications.sessionExpired);
+    resetAuth();
+    navigate('/login');
+  }, [texts.dashboard.clients.notifications.sessionExpired, resetAuth, navigate]);
+
+  const validateAndExecute = useCallback(async (operation: () => Promise<any>) => {
     try {
       const isValid = await validateSession();
       if (!isValid) {
-        toast.error("Sessão expirada. Por favor, faça login novamente.");
-        await resetAuth();
+        handleSessionError();
         return false;
       }
       await operation();
@@ -32,22 +39,24 @@ export const DashboardClients = () => {
     } catch (error) {
       return false;
     }
-  };
+  }, [validateSession, handleSessionError]);
 
   // Fetch clients with debounced search
   const debouncedSearch = useCallback(
     debounce(async (search: string) => {
-      setIsLoading(true);
-      try {
-        await validateAndExecute(async () => {
+      if (!isLoading) {
+        setIsLoading(true);
+        try {
           const results = await fetchClients(search);
           setClients(results);
-        });
-      } finally {
-        setIsLoading(false);
+        } catch (error) {
+          handleSessionError();
+        } finally {
+          setIsLoading(false);
+        }
       }
     }, 300),
-    []
+    [fetchClients, handleSessionError, isLoading]
   );
 
   useEffect(() => {
@@ -85,7 +94,7 @@ export const DashboardClients = () => {
   };
 
   const handleDeleteClient = async (client: Client) => {
-    if (window.confirm('Tem certeza que deseja excluir este paciente?')) {
+    if (window.confirm(texts.dashboard.clients.confirmDelete)) {
       try {
         await validateAndExecute(async () => {
           await deleteClient(client.id);
@@ -133,59 +142,55 @@ export const DashboardClients = () => {
         />
       </div>
 
-      <div className="overflow-x-auto rounded-box border border-base-content/5 bg-base-100">
-      <table className="table">
-          <thead>
-            <tr className="bg-primary">
-              <th className="text-base-200">{texts.dashboard.clients.table.name}</th>
-              <th className="text-base-200">{texts.dashboard.clients.table.cpf}</th>
-              <th className="text-base-200">{texts.dashboard.clients.table.phone}</th>
-              <th className="text-base-200">{texts.dashboard.clients.table.birth_date}</th>
-              <th className="text-base-200">{texts.dashboard.clients.table.actions}</th>
-            </tr>
-          </thead>
-          <tbody>
-            {isLoading ? (
+      {isLoading ? (
+        <div className="w-full flex justify-center">
+          <div className="loading loading-spinner loading-lg"></div>
+        </div>
+      ) : clients.length > 0 ? (
+        <div className="overflow-x-auto">
+          <table className="table w-full">
+            <thead>
               <tr>
-                <td colSpan={5} className="text-center">
-                  <span className="loading loading-spinner loading-md"></span>
-                </td>
+                <th>{texts.dashboard.clients.table.name}</th>
+                <th>{texts.dashboard.clients.table.cpfCnpj}</th>
+                <th>{texts.dashboard.clients.table.phone}</th>
+                <th>{texts.dashboard.clients.table.birthDate}</th>
+                <th>{texts.dashboard.clients.table.actions}</th>
               </tr>
-            ) : clients.length === 0 ? (
-              <tr>
-                <td colSpan={5} className="text-center">
-                  Nenhum paciente encontrado
-                </td>
-              </tr>
-            ) : (
-              clients.map((client) => (
-                <tr key={client.id} className="hover:bg-base-200 transition-colors">
-                  <td className="font-medium">{`${client.first_name} ${client.last_name}`}</td>
+            </thead>
+            <tbody>
+              {clients.map((client) => (
+                <tr key={client.id}>
+                  <td>{`${client.first_name} ${client.last_name}`}</td>
                   <td>{client.cpf_cnpj}</td>
                   <td>{client.phone}</td>
-                  <td>{client.birth_date ? new Date(client.birth_date).toLocaleDateString() : '-'}</td>
+                  <td>{new Date(client.birth_date).toLocaleDateString()}</td>
                   <td>
                     <div className="flex gap-2">
                       <button
-                        className="btn btn-ghost btn-xs rounded-lg"
+                        className="btn btn-ghost btn-sm"
                         onClick={() => handleEdit(client)}
                       >
-                        <Edit2 size={16} className="text-primary" />
+                        <Edit2 size={20} />
                       </button>
                       <button
-                        className="btn btn-ghost btn-xs rounded-lg"
+                        className="btn btn-ghost btn-sm text-error"
                         onClick={() => handleDeleteClient(client)}
                       >
-                        <Trash size={16} className="text-error" />
+                        <Trash size={20} />
                       </button>
                     </div>
                   </td>
                 </tr>
-              ))
-            )}
-          </tbody>
-        </table>
-      </div>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      ) : (
+        <div className="text-center text-gray-500">
+          {texts.dashboard.clients.noResults}
+        </div>
+      )}
 
       <ClientModal
         isOpen={isModalOpen}

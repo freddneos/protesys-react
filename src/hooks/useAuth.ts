@@ -1,50 +1,36 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback, useContext } from 'react';
 import { User, Session, AuthError } from '@supabase/supabase-js';
 import { supabase } from '../lib/supabase';
 import type { Company } from '../types/database';
+import { AuthContext, AuthContextType } from '../contexts/AuthContext';
 
-export function useAuth() {
+// Use a singleton pattern to ensure only one instance of auth state exists
+let authInstance: ReturnType<typeof useCreateAuthState> | null = null;
+
+function useCreateAuthState() {
+  console.log('1. Creating auth state');
   const [session, setSession] = useState<Session | null>(null);
   const [user, setUser] = useState<User | null>(null);
   const [company, setCompany] = useState<Company | null>(null);
   const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    // Initial session check
-    checkSession();
-
-    // Subscribe to auth changes
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(handleAuthChange);
-    return () => subscription.unsubscribe();
+  const [initialized, setInitialized] = useState(false);
+  
+  const resetAuth = useCallback(async () => {
+    console.log('25. Resetting auth state');
+    try {
+      await supabase.auth.signOut();
+      console.log('26. Supabase sign out successful');
+    } finally {
+      setSession(null);
+      setUser(null);
+      setCompany(null);
+      localStorage.clear();
+      console.log('27. Auth state reset complete');
+    }
   }, []);
 
-  const checkSession = async () => {
-    try {
-      const { data: { session } } = await supabase.auth.getSession();
-      setSession(session);
-      setUser(session?.user ?? null);
-      if (session?.user) {
-        await fetchCompanyData(session.user);
-      }
-      setLoading(false);
-    } catch (error) {
-      console.error('Error checking session:', error);
-      setLoading(false);
-    }
-  };
-
-  const handleAuthChange = async (event: string, session: Session | null) => {
-    setSession(session);
-    setUser(session?.user ?? null);
-
-    if (event === 'SIGNED_IN' && session?.user) {
-      await fetchCompanyData(session.user);
-    } else if (event === 'SIGNED_OUT') {
-      setCompany(null);
-    }
-  };
-
-  const fetchCompanyData = async (user: User) => {
+  const fetchCompanyData = useCallback(async (user: User) => {
+    console.log('11. Fetching company data for user');
     try {
       const { data: companyData, error } = await supabase
         .from('companies')
@@ -53,14 +39,111 @@ export function useAuth() {
         .single();
 
       if (error) throw error;
+      console.log('12. Company data fetched successfully');
       setCompany(companyData);
+      return true;
     } catch (error) {
+      console.log('13. Error fetching company data:', error);
       console.error('Error fetching company data:', error);
       await resetAuth();
+      return false;
+    } finally {
+      setLoading(false);
+      setInitialized(true);
     }
-  };
+  }, [resetAuth]);
+
+  const handleAuthChange = useCallback(async (event: string, newSession: Session | null) => {
+    console.log('8. Auth state changed:', event, newSession);
+    
+    try {
+      if (event === 'SIGNED_IN' && newSession?.user) {
+        // Update user state immediately
+        setSession(newSession);
+        setUser(newSession.user);
+        setLoading(true); // Set loading when auth changes
+        console.log('9. User signed in, user state updated, fetching company data');
+        const success = await fetchCompanyData(newSession.user);
+        
+        // Ensure loading is set to false even if there's an error
+        if (!success) {
+          setLoading(false);
+        }
+      } else if (event === 'SIGNED_OUT') {
+        console.log('10. User signed out, clearing data');
+        setSession(null);
+        setUser(null);
+        setCompany(null);
+        setLoading(false);
+        setInitialized(true);
+      }
+    } catch (error) {
+      console.error('Error handling auth change:', error);
+      setLoading(false);
+      setInitialized(true);
+    }
+  }, [fetchCompanyData]);
+
+  useEffect(() => {
+    let mounted = true;
+    console.log('2. useAuth useEffect triggered');
+
+    const initialize = async () => {
+      try {
+        console.log('4. Checking session');
+        const { data, error } = await supabase.auth.getSession();
+        
+        if (error) throw error;
+        
+        console.log('5. Session data:', data.session ? 'Session exists' : 'No session');
+        
+        if (!mounted) return;
+        
+        if (data.session?.user) {
+          setSession(data.session);
+          setUser(data.session.user);
+          console.log('6. Session user found, fetching company data');
+          await fetchCompanyData(data.session.user);
+        } else {
+          console.log('6a. No user session found, setting loading to false');
+          setLoading(false);
+          setInitialized(true);
+        }
+      } catch (error) {
+        console.log('7. Error checking session:', error);
+        console.error('Error checking session:', error);
+        if (mounted) {
+          setLoading(false);
+          setInitialized(true);
+        }
+      }
+    };
+
+    // Initialize auth state immediately
+    initialize();
+
+    // Subscribe to auth changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(handleAuthChange);
+
+    // Set a safety timeout to ensure loading state is turned off
+    const safetyTimer = setTimeout(() => {
+      if (mounted && loading) {
+        console.log('Timeout safety: forcing loading to false');
+        setLoading(false);
+        setInitialized(true);
+      }
+    }, 2000);
+
+    return () => {
+      console.log('3. Cleanup - unsubscribing from auth changes');
+      mounted = false;
+      clearTimeout(safetyTimer);
+      subscription.unsubscribe();
+    };
+  }, [handleAuthChange, fetchCompanyData, loading]);
 
   const signIn = async (email: string, password: string) => {
+    console.log('14. Attempting sign in');
     try {
       setLoading(true);
       const { data, error } = await supabase.auth.signInWithPassword({
@@ -68,16 +151,44 @@ export function useAuth() {
         password,
       });
       
-      if (error) throw error;
+      if (error) {
+        console.log('16. Sign in error:', error);
+        setLoading(false);
+        throw error;
+      }
+      
+      console.log('15. Sign in successful');
+      
+      if (data.user) {
+        // Manually update state to avoid waiting for the auth change event
+        setSession(data.session);
+        setUser(data.user);
+        
+        // Try to fetch company data immediately
+        try {
+          await fetchCompanyData(data.user);
+        } catch (e) {
+          console.error('Error fetching company data during sign in:', e);
+          setLoading(false);
+          setInitialized(true);
+        }
+      } else {
+        // If no user in response, reset loading state
+        setLoading(false);
+        setInitialized(true);
+      }
+      
       return { data, error: null };
     } catch (error) {
-      return { data: null, error: error as AuthError };
-    } finally {
+      console.log('16. Sign in error:', error);
       setLoading(false);
+      setInitialized(true);
+      return { data: null, error: error as AuthError };
     }
   };
 
   const signUp = async (email: string, password: string, companyName: string) => {
+    console.log('17. Starting sign up process');
     try {
       setLoading(true);
       // Create user
@@ -87,6 +198,7 @@ export function useAuth() {
       });
 
       if (error || !user) throw error;
+      console.log('18. User created successfully');
 
       // Create company
       const { data: companyData, error: companyError } = await supabase
@@ -96,6 +208,7 @@ export function useAuth() {
         .single();
       
       if (companyError) throw companyError;
+      console.log('19. Company created successfully');
 
       // Update user with company_id
       const { error: updateError } = await supabase
@@ -104,47 +217,45 @@ export function useAuth() {
         .eq('id', user.id);
       
       if (updateError) throw updateError;
+      console.log('20. User updated with company ID');
 
       return { user, company: companyData, error: null };
     } catch (error) {
-      return { user: null, company: null, error: error as AuthError };
-    } finally {
+      console.log('21. Sign up error:', error);
       setLoading(false);
+      return { user: null, company: null, error: error as AuthError };
     }
   };
 
   const signOut = async () => {
+    console.log('22. Starting sign out process');
     try {
       setLoading(true);
       await resetAuth();
+      console.log('23. Sign out successful');
       return { error: null };
     } catch (error) {
-      return { error: error as AuthError };
-    } finally {
+      console.log('24. Sign out error:', error);
       setLoading(false);
-    }
-  };
-
-  const resetAuth = async () => {
-    try {
-      await supabase.auth.signOut();
-    } finally {
-      setSession(null);
-      setUser(null);
-      setCompany(null);
-      localStorage.clear();
+      return { error: error as AuthError };
     }
   };
 
   const validateSession = async () => {
+    console.log('28. Validating session');
     try {
-      const { data: { user }, error } = await supabase.auth.getUser();
-      if (error || !user) {
+      const { data, error } = await supabase.auth.getSession();
+      
+      if (error || !data.session) {
+        console.log('29. Session invalid, resetting auth');
         await resetAuth();
         return false;
       }
+      
+      console.log('30. Session valid for user:', data.session.user.email);
       return true;
-    } catch {
+    } catch (error) {
+      console.log('31. Error validating session, resetting auth');
       await resetAuth();
       return false;
     }
@@ -155,10 +266,22 @@ export function useAuth() {
     user,
     company,
     loading,
+    initialized,
     signIn,
     signUp,
     signOut,
     validateSession,
     resetAuth
   };
+}
+
+// Custom hook to use the auth context
+export function useAuth(): AuthContextType {
+  const context = useContext(AuthContext);
+  
+  if (context === undefined) {
+    throw new Error('useAuth must be used within an AuthProvider');
+  }
+  
+  return context;
 }

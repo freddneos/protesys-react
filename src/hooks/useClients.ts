@@ -9,15 +9,13 @@ export const useClients = () => {
   const { user } = useAuth();
 
   const fetchClients = useCallback(async (search?: string) => {
-    console.log(user, 'USER')
     if (!user?.user_metadata.company_id) {
-      return [];
+      throw new Error('Invalid session');
     }
 
     try {
       setIsLoading(true);
       setError(null);
-      
       let query = supabase
         .from('clients')
         .select('*')
@@ -29,28 +27,24 @@ export const useClients = () => {
       }
 
       const { data, error: queryError } = await query;
-
+      setIsLoading(false);
       if (queryError) throw queryError;
       return data as Client[];
     } catch (err) {
-      const message = err instanceof Error ? err.message : 'Erro ao buscar clientes';
+      const message = err instanceof Error ? err.message : 'Error fetching clients';
       setError(message);
-      console.error('Error fetching clients:', err);
-      return [];
-    } finally {
       setIsLoading(false);
+      throw err;
     }
   }, [user?.user_metadata.company_id]);
 
   const createClient = useCallback(async (input: CreateClientInput) => {
     if (!user?.user_metadata.company_id) {
-      throw new Error('Sessão inválida');
+      throw new Error('Invalid session');
     }
 
     try {
-      setIsLoading(true);
       setError(null);
-      
       const { data, error: createError } = await supabase
         .from('clients')
         .insert([{
@@ -63,28 +57,22 @@ export const useClients = () => {
       if (createError) throw createError;
       return data as Client;
     } catch (err) {
-      const message = err instanceof Error ? err.message : 'Erro ao criar cliente';
+      const message = err instanceof Error ? err.message : 'Error creating client';
       setError(message);
-      console.error('Error creating client:', err);
       throw err;
-    } finally {
-      setIsLoading(false);
     }
   }, [user?.user_metadata.company_id]);
 
-  const updateClient = useCallback(async (input: UpdateClientInput) => {
+  const updateClient = useCallback(async ({ id, ...input }: UpdateClientInput) => {
     if (!user?.user_metadata.company_id) {
-      throw new Error('Sessão inválida');
+      throw new Error('Invalid session');
     }
 
     try {
-      setIsLoading(true);
       setError(null);
-      
-      const { id, ...updateData } = input;
       const { data, error: updateError } = await supabase
         .from('clients')
-        .update(updateData)
+        .update(input)
         .eq('id', id)
         .eq('company_id', user.user_metadata.company_id)
         .select()
@@ -93,24 +81,19 @@ export const useClients = () => {
       if (updateError) throw updateError;
       return data as Client;
     } catch (err) {
-      const message = err instanceof Error ? err.message : 'Erro ao atualizar cliente';
+      const message = err instanceof Error ? err.message : 'Error updating client';
       setError(message);
-      console.error('Error updating client:', err);
       throw err;
-    } finally {
-      setIsLoading(false);
     }
   }, [user?.user_metadata.company_id]);
 
   const deleteClient = useCallback(async (id: string) => {
     if (!user?.user_metadata.company_id) {
-      throw new Error('Sessão inválida');
+      throw new Error('Invalid session');
     }
 
     try {
-      setIsLoading(true);
       setError(null);
-      
       const { error: deleteError } = await supabase
         .from('clients')
         .delete()
@@ -119,12 +102,9 @@ export const useClients = () => {
 
       if (deleteError) throw deleteError;
     } catch (err) {
-      const message = err instanceof Error ? err.message : 'Erro ao excluir cliente';
+      const message = err instanceof Error ? err.message : 'Error deleting client';
       setError(message);
-      console.error('Error deleting client:', err);
       throw err;
-    } finally {
-      setIsLoading(false);
     }
   }, [user?.user_metadata.company_id]);
 
