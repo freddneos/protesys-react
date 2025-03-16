@@ -1,5 +1,5 @@
-import { useTexts } from "../hooks/useTexts";
-import { useTheme } from "../hooks/useTheme";
+import { useTexts } from "../../hooks/useTexts";
+import { useTheme } from "../../hooks/useTheme";
 
 export const DashboardSettings = () => {
   const { texts } = useTexts();

@@ -4,10 +4,8 @@ import { supabase } from '../lib/supabase';
 import type { Company } from '../types/database';
 import { AuthContext, AuthContextType } from '../contexts/AuthContext';
 
-// Use a singleton pattern to ensure only one instance of auth state exists
-let authInstance: ReturnType<typeof useCreateAuthState> | null = null;
-
-function useCreateAuthState() {
+// Export the function so it can be used
+export function useCreateAuthState() {
   console.log('1. Creating auth state');
   const [session, setSession] = useState<Session | null>(null);
   const [user, setUser] = useState<User | null>(null);
@@ -179,7 +177,7 @@ function useCreateAuthState() {
       }
       
       return { data, error: null };
-    } catch (error) {
+    } catch (error: unknown) {
       console.log('16. Sign in error:', error);
       setLoading(false);
       setInitialized(true);
@@ -220,7 +218,7 @@ function useCreateAuthState() {
       console.log('20. User updated with company ID');
 
       return { user, company: companyData, error: null };
-    } catch (error) {
+    } catch (error: unknown) {
       console.log('21. Sign up error:', error);
       setLoading(false);
       return { user: null, company: null, error: error as AuthError };
@@ -234,10 +232,10 @@ function useCreateAuthState() {
       await resetAuth();
       console.log('23. Sign out successful');
       return { error: null };
-    } catch (error) {
-      console.log('24. Sign out error:', error);
+    } catch (err) {
+      console.log('24. Sign out error:', err);
       setLoading(false);
-      return { error: error as AuthError };
+      return { error: err as AuthError };
     }
   };
 
@@ -247,7 +245,7 @@ function useCreateAuthState() {
       const { data, error } = await supabase.auth.getSession();
       
       if (error || !data.session) {
-        console.log('29. Session invalid, resetting auth');
+        console.log('29. Session invalid or error:', error);
         await resetAuth();
         return false;
       }
@@ -255,7 +253,7 @@ function useCreateAuthState() {
       console.log('30. Session valid for user:', data.session.user.email);
       return true;
     } catch (error) {
-      console.log('31. Error validating session, resetting auth');
+      console.log('31. Error validating session:', error);
       await resetAuth();
       return false;
     }

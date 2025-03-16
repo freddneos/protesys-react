@@ -3,15 +3,10 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import { ThemeProvider } from './components/ThemeProvider';
 import { TextProvider } from './components/TextProvider';
 import { AuthProvider } from './components/AuthProvider';
-import { Login } from './components/Login';
-import { Dashboard } from './components/Dashboard';
+import { Login } from './pages/Login';
+import { Dashboard } from './pages/Dashboard';
 import { ProtectedRoute } from './components/ProtectedRoute';
-import { Hero } from './components/Hero';
-import { Features } from './components/Features';
-import { FoundersSection } from './components/FoundersSection';
-import { WaitlistSection } from './components/WaitlistSection';
-import { Footer } from './components/Footer';
-import Navbar from './components/Navbar';
+import Home from './pages/Home';
 import Clarity from '@microsoft/clarity';
 import { Toaster } from 'react-hot-toast';
 
@@ -28,17 +23,7 @@ function App() {
           <Routes>
             {/* Public routes */}
             <Route path="/login" element={<Login />} />
-            
-            <Route path="/" element={
-              <>
-                <Navbar />
-                <Hero />
-                <Features />
-                <FoundersSection />
-                <WaitlistSection />
-                <Footer />
-              </>
-            } />
+            <Route path="/" element={<Home />} />
             
             {/* Protected routes */}
             <Route element={<ProtectedRoute />}>

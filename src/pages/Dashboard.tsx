@@ -1,9 +1,9 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
-import { DashboardLayout } from './DashboardLayout';
-import { DashboardMetrics } from './DashboardMetrics';
-import { DashboardProfile } from './DashboardProfile';
-import { DashboardSettings } from './DashboardSettings';
-import { DashboardClients } from './DashboardClients';
+import { DashboardLayout } from './dashboard/DashboardLayout';
+import { DashboardMetrics } from './dashboard/DashboardMetrics';
+import { DashboardProfile } from './dashboard/DashboardProfile';
+import { DashboardSettings } from './dashboard/DashboardSettings';
+import { DashboardClients } from './dashboard/DashboardClients';
 
 export const Dashboard = () => {
   return (

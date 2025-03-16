@@ -1,8 +1,8 @@
 import { useState } from "react";
-import { useTexts } from "../hooks/useTexts";
-import { useAuth } from "../hooks/useAuth";
+import { useTexts } from "../../hooks/useTexts";
+import { useAuth } from "../../hooks/useAuth";
 import { toast } from "react-hot-toast";
-import { supabase } from "../lib/supabase";
+import { supabase } from "../../lib/supabase";
 
 export const DashboardProfile = () => {
   const { texts } = useTexts();

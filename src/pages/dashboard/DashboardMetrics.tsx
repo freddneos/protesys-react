@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { supabase } from "../lib/supabase";
-import { useTexts } from "../hooks/useTexts";
+import { supabase } from "../../lib/supabase";
+import { useTexts } from "../../hooks/useTexts";
 import {
   UserGroupIcon,
   ClipboardDocumentCheckIcon,

@@ -251,7 +251,14 @@
             "email": "E-mail",
             "personalInfo": "Informações Pessoais",
             "notifications": "Preferências de Notificação",
-            "security": "Configurações de Segurança"
+            "security": "Configurações de Segurança",
+            "company": "Empresa",
+            "newPassword": "Nova Senha",
+            "confirmPassword": "Confirmar Nova Senha",
+            "updatePassword": "Atualizar Senha",
+            "passwordMismatch": "As senhas não coincidem",
+            "passwordUpdated": "Senha atualizada com sucesso",
+            "updateError": "Erro ao atualizar senha"
         },
         "settings": {
             "title": "Configurações",

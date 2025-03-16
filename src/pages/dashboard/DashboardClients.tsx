@@ -1,9 +1,8 @@
 import { useState, useEffect, useCallback } from "react";
-import { useTexts } from "../hooks/useTexts";
-import { useClients } from "../hooks/useClients";
-import { useAuth } from "../hooks/useAuth";
-import { ClientModal } from "./ClientModal";
-import { Client, CreateClientInput } from "../types/client";
+import { useTexts } from "../../hooks/useTexts";
+import { useClients } from "../../hooks/useClients";
+import { ClientModal } from "../../components/ClientModal";
+import { Client, CreateClientInput } from "../../types/client";
 import { toast } from "react-hot-toast";
 import { UserAdd, Edit2, Trash } from "iconsax-react";
 import debounce from "lodash/debounce";
@@ -12,7 +11,6 @@ import { useNavigate } from "react-router-dom";
 export const DashboardClients = () => {
   const { texts } = useTexts();
   const { fetchClients, createClient, updateClient, deleteClient } = useClients();
-  const { validateSession, resetAuth } = useAuth();
   const navigate = useNavigate();
   
   const [clients, setClients] = useState<Client[]>([]);
@@ -22,56 +20,39 @@ export const DashboardClients = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSessionError = useCallback(() => {
-    toast.error(texts.dashboard.clients.notifications.sessionExpired);
-    resetAuth();
+    toast.error(texts.dashboard.clients.notifications.createError);
     navigate('/login');
-  }, [texts.dashboard.clients.notifications.sessionExpired, resetAuth, navigate]);
+  }, [texts.dashboard.clients.notifications.createError, navigate]);
 
-  const validateAndExecute = useCallback(async (operation: () => Promise<any>) => {
-    try {
-      const isValid = await validateSession();
-      if (!isValid) {
-        handleSessionError();
-        return false;
-      }
-      await operation();
-      return true;
-    } catch (error) {
-      return false;
-    }
-  }, [validateSession, handleSessionError]);
-
-  // Fetch clients with debounced search - removed isLoading from dependencies
-  const debouncedSearch = useCallback(
-    debounce(async (search: string) => {
+  const debouncedSearch = useCallback((search: string) => {
+    const searchFunc = async () => {
       setIsLoading(true);
       try {
         const results = await fetchClients(search);
         setClients(results);
-      } catch (error) {
+      } catch {
         handleSessionError();
       } finally {
         setIsLoading(false);
       }
-    }, 300),
-    [fetchClients, handleSessionError] // Removed isLoading dependency
-  );
+    };
+    return debounce(searchFunc, 300);
+  }, [fetchClients, handleSessionError]);
 
   useEffect(() => {
-    debouncedSearch(searchTerm);
+    const search = debouncedSearch(searchTerm);
+    search();
     return () => {
-      debouncedSearch.cancel();
+      search.cancel();
     };
   }, [searchTerm, debouncedSearch]);
 
   const handleCreateClient = async (data: CreateClientInput) => {
     try {
-      await validateAndExecute(async () => {
-        await createClient(data);
-        toast.success(texts.dashboard.clients.notifications.createSuccess);
-        debouncedSearch(searchTerm);
-      });
-    } catch (error) {
+      await createClient(data);
+      toast.success(texts.dashboard.clients.notifications.createSuccess);
+      debouncedSearch(searchTerm)();
+    } catch {
       toast.error(texts.dashboard.clients.notifications.createError);
     }
   };
@@ -80,26 +61,22 @@ export const DashboardClients = () => {
     if (!selectedClient) return;
     
     try {
-      await validateAndExecute(async () => {
-        await updateClient({ id: selectedClient.id, ...data });
-        toast.success(texts.dashboard.clients.notifications.updateSuccess);
-        debouncedSearch(searchTerm);
-        setSelectedClient(undefined);
-      });
-    } catch (error) {
+      await updateClient({ id: selectedClient.id, ...data });
+      toast.success(texts.dashboard.clients.notifications.updateSuccess);
+      debouncedSearch(searchTerm)();
+      setSelectedClient(undefined);
+    } catch {
       toast.error(texts.dashboard.clients.notifications.updateError);
     }
   };
 
   const handleDeleteClient = async (client: Client) => {
-    if (window.confirm(texts.dashboard.clients.confirmDelete)) {
+    if (window.confirm(texts.dashboard.clients.notifications.deleteSuccess)) {
       try {
-        await validateAndExecute(async () => {
-          await deleteClient(client.id);
-          toast.success(texts.dashboard.clients.notifications.deleteSuccess);
-          debouncedSearch(searchTerm);
-        });
-      } catch (error) {
+        await deleteClient(client.id);
+        toast.success(texts.dashboard.clients.notifications.deleteSuccess);
+        debouncedSearch(searchTerm)();
+      } catch {
         toast.error(texts.dashboard.clients.notifications.deleteError);
       }
     }
@@ -113,6 +90,11 @@ export const DashboardClients = () => {
   const handleCloseModal = () => {
     setIsModalOpen(false);
     setSelectedClient(undefined);
+  };
+
+  const formatDate = (date: string | null) => {
+    if (!date) return '-';
+    return new Date(date).toLocaleDateString();
   };
 
   return (
@@ -150,9 +132,9 @@ export const DashboardClients = () => {
             <thead>
               <tr>
                 <th>{texts.dashboard.clients.table.name}</th>
-                <th>{texts.dashboard.clients.table.cpfCnpj}</th>
+                <th>{texts.dashboard.clients.table.cpf}</th>
                 <th>{texts.dashboard.clients.table.phone}</th>
-                <th>{texts.dashboard.clients.table.birthDate}</th>
+                <th>{texts.dashboard.clients.table.birth_date}</th>
                 <th>{texts.dashboard.clients.table.actions}</th>
               </tr>
             </thead>
@@ -162,7 +144,7 @@ export const DashboardClients = () => {
                   <td>{`${client.first_name} ${client.last_name}`}</td>
                   <td>{client.cpf_cnpj}</td>
                   <td>{client.phone}</td>
-                  <td>{new Date(client.birth_date).toLocaleDateString()}</td>
+                  <td>{formatDate(client.birth_date)}</td>
                   <td>
                     <div className="flex gap-2">
                       <button
@@ -186,7 +168,7 @@ export const DashboardClients = () => {
         </div>
       ) : (
         <div className="text-center text-gray-500">
-          {texts.dashboard.clients.noResults}
+          {texts.dashboard.clients.search.placeholder || 'No clients found'}
         </div>
       )}
 
