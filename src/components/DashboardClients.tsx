@@ -41,22 +41,20 @@ export const DashboardClients = () => {
     }
   }, [validateSession, handleSessionError]);
 
-  // Fetch clients with debounced search
+  // Fetch clients with debounced search - removed isLoading from dependencies
   const debouncedSearch = useCallback(
     debounce(async (search: string) => {
-      if (!isLoading) {
-        setIsLoading(true);
-        try {
-          const results = await fetchClients(search);
-          setClients(results);
-        } catch (error) {
-          handleSessionError();
-        } finally {
-          setIsLoading(false);
-        }
+      setIsLoading(true);
+      try {
+        const results = await fetchClients(search);
+        setClients(results);
+      } catch (error) {
+        handleSessionError();
+      } finally {
+        setIsLoading(false);
       }
     }, 300),
-    [fetchClients, handleSessionError, isLoading]
+    [fetchClients, handleSessionError] // Removed isLoading dependency
   );
 
   useEffect(() => {

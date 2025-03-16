@@ -31,7 +31,7 @@ export const DashboardLayout = () => {
 
   return (
     <div className="flex flex-col h-screen bg-base-200">
-      <div className="navbar bg-base-100 border-b border-base-300 shadow-sm">
+      <div className="navbar bg-base-100 px-[40px] border-b border-base-300 shadow-sm">
         <div className="flex-1">
           <span className="text-2xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
             {texts.global.appName}
