@@ -1,5 +1,5 @@
 import { useEffect, useState, ReactNode } from 'react';
-import { User, Session } from '@supabase/supabase-js';
+import { User, Session, AuthError } from '@supabase/supabase-js';
 import { supabase } from '../lib/supabase';
 import type { Company } from '../types/database';
 import { AuthContext } from './AuthContextDef';
@@ -97,9 +97,25 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const signOut = async () => {
+    console.log('Signing out...');
     setLoading(true);
     try {
-      return await supabase.auth.signOut();
+      const { error } = await supabase.auth.signOut();
+      if (error) {
+        console.error('Error signing out:', error);
+        throw error;
+      }
+      
+      // Clear all state after successful signout
+      setSession(null);
+      setUser(null);
+      setCompany(null);
+      
+      console.log('Signed out successfully');
+      return { error: null };
+    } catch (error) {
+      console.error('Error in signOut:', error);
+      return { error: error as AuthError };
     } finally {
       setLoading(false);
     }

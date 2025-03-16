@@ -105,10 +105,10 @@ export const DashboardClients = () => {
         />
       </div>
 
-      <div className="overflow-x-auto">
-        <table className="table table-zebra w-full">
+      <div className="overflow-x-auto rounded-box border border-base-content/5 bg-base-100">
+      <table className="table">
           <thead>
-            <tr>
+            <tr className="bg-base-200">
               <th>{texts.dashboard.clients.table.name}</th>
               <th>{texts.dashboard.clients.table.cpf}</th>
               <th>{texts.dashboard.clients.table.phone}</th>
@@ -131,24 +131,24 @@ export const DashboardClients = () => {
               </tr>
             ) : (
               clients.map((client) => (
-                <tr key={client.id}>
-                  <td>{`${client.first_name} ${client.last_name}`}</td>
+                <tr key={client.id} className="hover:bg-base-200 transition-colors">
+                  <td className="font-medium">{`${client.first_name} ${client.last_name}`}</td>
                   <td>{client.cpf_cnpj}</td>
                   <td>{client.phone}</td>
                   <td>{client.birth_date ? new Date(client.birth_date).toLocaleDateString() : '-'}</td>
                   <td>
                     <div className="flex gap-2">
                       <button
-                        className="btn btn-ghost btn-sm rounded-full"
+                        className="btn btn-ghost btn-xs rounded-lg"
                         onClick={() => handleEdit(client)}
                       >
-                        <Edit2 size={18} className="text-primary" />
+                        <Edit2 size={16} className="text-primary" />
                       </button>
                       <button
-                        className="btn btn-ghost btn-sm rounded-full"
+                        className="btn btn-ghost btn-xs rounded-lg"
                         onClick={() => handleDeleteClient(client)}
                       >
-                        <Trash size={18} className="text-error" />
+                        <Trash size={16} className="text-error" />
                       </button>
                     </div>
                   </td>

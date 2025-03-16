@@ -1,6 +1,7 @@
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 import { RiUser3Line, RiSettings4Line, RiBarChartLine, RiLogoutBoxLine, RiUserSearchLine } from 'react-icons/ri';
-import { useAuth } from '../hooks/useAuth';
+import { useAuth } from '../hooks/useAuthHook';
 import { useTexts } from '../hooks/useTexts';
 
 export const DashboardLayout = () => {
@@ -8,10 +9,24 @@ export const DashboardLayout = () => {
   const navigate = useNavigate();
   const { signOut, session } = useAuth();
   const { texts } = useTexts();
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
 
   const handleLogout = async () => {
-    await signOut();
-    navigate('/', { replace: true });
+    if (isLoggingOut) return;
+    
+    setIsLoggingOut(true);
+    try {
+      const { error } = await signOut();
+      if (error) {
+        console.error('Error during logout:', error);
+        return;
+      }
+      navigate('/login', { replace: true });
+    } catch (error) {
+      console.error('Error in handleLogout:', error);
+    } finally {
+      setIsLoggingOut(false);
+    }
   };
 
   return (

@@ -1,5 +1,5 @@
 import { useTexts } from "../hooks/useTexts";
-import { useAuth } from "../hooks/useAuth";
+import { useAuth } from "../hooks/useAuthHook";
 
 export const DashboardProfile = () => {
   const { texts } = useTexts();
