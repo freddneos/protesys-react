@@ -5,6 +5,7 @@ import { DashboardProfile } from './dashboard/DashboardProfile';
 import { DashboardSettings } from './dashboard/DashboardSettings';
 import { DashboardClients } from './dashboard/DashboardClients';
 import { DashboardProsthetists } from './dashboard/DashboardProsthetists';
+import { DashboardStages } from './dashboard/DashboardStages';
 
 export const Dashboard = () => {
   return (
@@ -14,6 +15,7 @@ export const Dashboard = () => {
         <Route path="metrics" element={<DashboardMetrics />} />
         <Route path="clients" element={<DashboardClients />} />
         <Route path="prosthetists" element={<DashboardProsthetists />} />
+        <Route path="stages" element={<DashboardStages />} />
         <Route path="profile" element={<DashboardProfile />} />
         <Route path="settings" element={<DashboardSettings />} />
       </Route>

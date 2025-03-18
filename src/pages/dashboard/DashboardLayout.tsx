@@ -1,6 +1,6 @@
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
-import { RiUser3Line, RiSettings4Line, RiBarChartLine, RiLogoutBoxLine, RiUserSearchLine, RiTeamLine } from 'react-icons/ri';
+import { RiUser3Line, RiSettings4Line, RiBarChartLine, RiLogoutBoxLine, RiUserSearchLine, RiTeamLine, RiListSettingsLine } from 'react-icons/ri';
 import { useAuth } from '../../hooks/useAuth';
 import { useTexts } from '../../hooks/useTexts';
 
@@ -88,6 +88,19 @@ export const DashboardLayout = () => {
               >
                 <RiTeamLine className="w-5 h-5" />
                 {texts.dashboard.navigation.prosthetists}
+              </Link>
+            </li>
+            <li>
+              <Link 
+                to="/dashboard/stages" 
+                className={`flex items-center gap-3 p-4 rounded-xl transition-all ${
+                  location.pathname === '/dashboard/stages' 
+                    ? 'bg-primary text-primary-content shadow-lg shadow-primary/20' 
+                    : 'hover:bg-base-200'
+                }`}
+              >
+                <RiListSettingsLine className="w-5 h-5" />
+                {texts.dashboard.navigation.stages}
               </Link>
             </li>
             <li>

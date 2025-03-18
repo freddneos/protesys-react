@@ -53,12 +53,15 @@ export interface Stage {
   id: string;
   company_id: string;
   name: string;
-  description?: string;
+  description: string | null;
   min_days: number;
   max_days: number;
-  color?: string;
+  color: string | null;
   created_at: string;
 }
+
+export type CreateStageInput = Omit<Stage, 'id' | 'company_id' | 'created_at'>;
+export type UpdateStageInput = CreateStageInput & { id: string };
 
 export interface ProcessStage {
   id: string;

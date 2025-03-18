@@ -242,7 +242,8 @@
             "profile": "Perfil",
             "settings": "Configurações",
             "clients": "Pacientes",
-            "prosthetists": "Protéticos"
+            "prosthetists": "Protéticos",
+            "stages": "Etapas"
         },
         "user": {
             "logout": "Sair"
@@ -394,6 +395,62 @@
                 "deleteSuccess": "Protético excluído com sucesso!",
                 "deleteError": "Erro ao excluir protético",
                 "deleteConfirm": "Tem certeza que deseja excluir este protético?"
+            }
+        },
+        "stages": {
+            "title": "Gerenciar Etapas",
+            "search": {
+                "placeholder": "Buscar por nome...",
+                "noResults": "Nenhuma etapa encontrada"
+            },
+            "table": {
+                "name": "Nome",
+                "description": "Descrição",
+                "minDays": "Min. Dias",
+                "maxDays": "Max. Dias",
+                "color": "Cor",
+                "actions": "Ações"
+            },
+            "modal": {
+                "create": "Nova Etapa",
+                "edit": "Editar Etapa",
+                "form": {
+                    "name": {
+                        "label": "Nome",
+                        "placeholder": "Digite o nome da etapa",
+                        "required": "Nome é obrigatório"
+                    },
+                    "description": {
+                        "label": "Descrição",
+                        "placeholder": "Digite a descrição da etapa"
+                    },
+                    "minDays": {
+                        "label": "Mínimo de Dias",
+                        "required": "Mínimo de dias é obrigatório",
+                        "min": "Deve ser pelo menos 1 dia"
+                    },
+                    "maxDays": {
+                        "label": "Máximo de Dias",
+                        "required": "Máximo de dias é obrigatório",
+                        "min": "Deve ser pelo menos 1 dia"
+                    },
+                    "color": {
+                        "label": "Cor"
+                    }
+                },
+                "buttons": {
+                    "save": "Salvar",
+                    "cancel": "Cancelar"
+                }
+            },
+            "notifications": {
+                "createSuccess": "Etapa criada com sucesso!",
+                "createError": "Erro ao criar etapa",
+                "updateSuccess": "Etapa atualizada com sucesso!",
+                "updateError": "Erro ao atualizar etapa",
+                "deleteSuccess": "Etapa excluída com sucesso!",
+                "deleteError": "Erro ao excluir etapa",
+                "deleteConfirm": "Tem certeza que deseja excluir esta etapa?"
             }
         }
     }
